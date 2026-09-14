@@ -9,9 +9,9 @@
   <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260914">
-  <script defer src="main.js?v=20260914"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260914e">
+  <script defer src="main.js?v=20260914e"></script>
 </head>
 <body>
 
@@ -21,65 +21,103 @@
     <div class="wrap header__row">
       <button class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
       <nav class="nav" aria-label="Principal">
-        <a href="https://joieriagrau.com/es/content/23-coleccion-de-joyas">Joyas</a>
-        <a href="#relojeria">Relojes</a>
-        <a href="https://joieriagrau.com/es/content/11-Compromiso">Compromiso</a>
-        <a href="https://joieriagrau.com/es/marcas">Marcas</a>
+        <a href="joyas.html">Joyas</a>
+        <a href="relojes.html">Relojes</a>
+        <a href="compromiso.html">Compromiso</a>
+        <a href="marcas.html">Marcas</a>
       </nav>
       <a class="header__logo" href="index.html" aria-label="Grau — inicio"><img src="assets/img/logo.svg" alt="Grau" width="92" height="30"></a>
       <nav class="nav nav--right" aria-label="Secundaria">
-        <a href="https://joieriagrau.com/es/content/56-pre-owned">Pre-owned</a>
-        <a href="#tiendas">Tiendas</a>
+        <a href="pre-owned.html">Pre-owned</a>
+        <a href="tiendas.html">Tiendas</a>
         <a href="newsletter.html">Newsletter</a>
-        <a class="nav__cta" href="https://joieriagrau.com/es/content/42-contacto">Pedir cita</a>
+        <a class="nav__cta" href="cita.html">Pedir cita</a>
       </nav>
     </div>
   </header>
 
   <nav class="drawer" id="drawer" aria-label="Menú móvil">
-    <a href="https://joieriagrau.com/es/content/23-coleccion-de-joyas">Joyas</a>
-    <a href="#relojeria">Relojes</a>
-    <a href="https://joieriagrau.com/es/content/11-Compromiso">Compromiso</a>
-    <a href="https://joieriagrau.com/es/marcas">Marcas</a>
-    <a href="https://joieriagrau.com/es/content/56-pre-owned">Pre-owned</a>
-    <a href="#tiendas">Nuestras tiendas</a>
+    <a href="joyas.html">Joyas</a>
+    <a href="relojes.html">Relojes</a>
+    <a href="compromiso.html">Compromiso</a>
+    <a href="marcas.html">Marcas</a>
+    <a href="pre-owned.html">Pre-owned</a>
+    <a href="tiendas.html">Tiendas</a>
     <a href="newsletter.html">Newsletter</a>
-    <a class="btn" href="https://joieriagrau.com/es/content/42-contacto">Pedir cita</a>
+    <a href="historia.html">Nuestra historia</a>
+    <a class="btn" href="cita.html">Pedir cita</a>
   </nav>
 
   <main>
     <!-- HERO -->
-    <section class="hero">
-      <div class="hero__media">
-        <picture>
-          <source media="(max-width: 900px)" srcset="assets/img/tienda-m.jpg">
-          <img src="assets/img/tienda.jpg" alt="Fachada de la joyería Grau en Barcelona, con los escaparates de Rolex y Grau" width="1824" height="1168" fetchpriority="high">
-        </picture>
-      </div>
-      <div class="wrap">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero__grid">
         <div class="hero__content">
-          <p class="eyebrow reveal">Joyería y Relojería Grau</p>
-          <h1 class="display reveal" data-delay="1">Alta joyería<br>en Barcelona<br><em>y Girona.</em></h1>
-          <p class="lead reveal" data-delay="2">Distribuidores oficiales de las grandes maisons de relojería y joyería, con el asesoramiento cercano de siempre en cada una de nuestras boutiques.</p>
-          <div class="hero__actions reveal" data-delay="3">
-            <a class="btn" href="https://joieriagrau.com/es/content/23-coleccion-de-joyas">Descubrir colecciones <span class="arrow"></span></a>
-            <a class="btn btn--ghost" href="https://joieriagrau.com/es/content/42-contacto">Pedir cita</a>
+          <p class="eyebrow hero__in" style="--d:.05s">Joyería y Relojería Grau</p>
+          <h1 class="display hero__title" id="hero-title">
+            <span class="hero__line"><span style="--d:.15s">Alta joyería</span></span>
+            <span class="hero__line"><span style="--d:.27s">en Barcelona</span></span>
+            <span class="hero__line"><span style="--d:.39s">y Girona.</span></span>
+          </h1>
+          <p class="lead hero__in" style="--d:.6s">Distribuidores oficiales de las grandes maisons de relojería y joyería, con el asesoramiento cercano de siempre en cada una de nuestras boutiques.</p>
+          <div class="hero__actions hero__in" style="--d:.72s">
+            <a class="btn" href="joyas.html">Descubrir colecciones <span class="arrow"></span></a>
+            <a class="btn btn--ghost" href="cita.html">Pedir cita</a>
+          </div>
+          <ul class="hero__facts hero__in" style="--d:.86s">
+            <li><b>1947</b><span>Joyeros desde</span></li>
+            <li><b>Rolex</b><span>Distribuidor oficial</span></li>
+            <li><b>4</b><span>Boutiques</span></li>
+          </ul>
+        </div>
+
+        <div class="hero__visual">
+          <figure class="hero__frame" data-hero-slides aria-roledescription="carrusel" aria-label="Selección Grau">
+            <img class="hero__slide is-active" src="assets/img/hero-1.jpg" alt="Anillos de oro con nácar y diamantes" width="1200" height="1500" fetchpriority="high">
+            <img class="hero__slide" src="assets/img/hero-2.jpg" alt="Anillo solitario de diamantes en la mano" width="1200" height="1500" loading="lazy" decoding="async">
+            <img class="hero__slide" src="assets/img/hero-3.jpg" alt="Estuche de regalo Grau con lazo verde" width="1200" height="1500" loading="lazy" decoding="async">
+            <figcaption class="hero__caption">
+              <span class="hero__count"><b data-hero-index>01</b> / 03</span>
+              <a class="hero__label" data-hero-label href="joyas.html#halo">Anillos con nácar</a>
+              <span class="hero__dots" role="group" aria-label="Elegir imagen">
+                <button type="button" class="is-active" aria-label="Imagen 1" aria-pressed="true" data-label="Anillos con nácar" data-href="joyas.html#halo"><i></i></button>
+                <button type="button" aria-label="Imagen 2" aria-pressed="false" data-label="Anillos de compromiso" data-href="compromiso.html#anillos"><i></i></button>
+                <button type="button" aria-label="Imagen 3" aria-pressed="false" data-label="El estuche Grau" data-href="compromiso.html#estuche"><i></i></button>
+              </span>
+            </figcaption>
+          </figure>
+
+          <div class="hero__stores" data-hero-stores aria-label="Nuestras boutiques">
+            <a class="hero__inset is-active" href="https://goo.gl/maps/Z6WxXbZQNmudJMJ86" target="_blank" rel="noopener">
+              <img src="assets/img/boutique-barcelona.jpg" alt="Boutique Grau en Barcelona" width="320" height="320" decoding="async">
+              <span class="hero__inset-text"><small>Boutique <b>01</b> / 04</small>Barcelona<em>Cómo llegar</em></span>
+            </a>
+            <a class="hero__inset" href="https://goo.gl/maps/44UuukDzbcVEeRCd7" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/boutique-lloret.jpg" alt="Boutique Grau en Lloret de Mar" width="320" height="320" decoding="async">
+              <span class="hero__inset-text"><small>Boutique <b>02</b> / 04</small>Lloret de Mar<em>Cómo llegar</em></span>
+            </a>
+            <a class="hero__inset" href="https://goo.gl/maps/Aj171dMa1c7jZtro7" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/boutique-sabadell.jpg" alt="Boutique Grau en Sabadell" width="320" height="320" decoding="async">
+              <span class="hero__inset-text"><small>Boutique <b>03</b> / 04</small>Sabadell<em>Cómo llegar</em></span>
+            </a>
+            <a class="hero__inset" href="https://goo.gl/maps/2Y41hmbwuuz14GYp7" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <img src="assets/img/boutique-blanes.jpg" alt="Boutique Grau en Blanes" width="320" height="320" decoding="async">
+              <span class="hero__inset-text"><small>Boutique <b>04</b> / 04</small>Blanes<em>Cómo llegar</em></span>
+            </a>
           </div>
         </div>
       </div>
-      <div class="hero__meta">
-        <div class="wrap"><span>Distribuidor oficial Rolex</span><span>4 boutiques</span><span>Envío gratuito +75 €</span></div>
-      </div>
+      <a class="hero__scroll" href="#marcas" aria-label="Seguir bajando"><span></span></a>
     </section>
 
     <!-- MARCAS -->
-    <div class="marquee" aria-label="Marcas disponibles en Grau">
+    <div class="marquee" id="marcas" aria-label="Marcas disponibles en Grau">
       <div class="marquee__track">
         <div class="marquee__group">
-          <span class="marquee__item">Rolex</span><span class="marquee__item">Tudor</span><span class="marquee__item">Cartier</span><span class="marquee__item">TAG Heuer</span><span class="marquee__item">Messika</span><span class="marquee__item">Pomellato</span><span class="marquee__item">Damiani</span><span class="marquee__item">Dinh Van</span><span class="marquee__item">Roberto Coin</span><span class="marquee__item">Tissot</span><span class="marquee__item">Grau</span>
+          <span class="marquee__item">Rolex</span><span class="marquee__item">Tudor</span><span class="marquee__item">Cartier</span><span class="marquee__item">Omega</span><span class="marquee__item">TAG Heuer</span><span class="marquee__item">Messika</span><span class="marquee__item">Pomellato</span><span class="marquee__item">Damiani</span><span class="marquee__item">Dinh Van</span><span class="marquee__item">Roberto Coin</span><span class="marquee__item">Chopard</span><span class="marquee__item">Grau</span>
         </div>
         <div class="marquee__group" aria-hidden="true">
-          <span class="marquee__item">Rolex</span><span class="marquee__item">Tudor</span><span class="marquee__item">Cartier</span><span class="marquee__item">TAG Heuer</span><span class="marquee__item">Messika</span><span class="marquee__item">Pomellato</span><span class="marquee__item">Damiani</span><span class="marquee__item">Dinh Van</span><span class="marquee__item">Roberto Coin</span><span class="marquee__item">Tissot</span><span class="marquee__item">Grau</span>
+          <span class="marquee__item">Rolex</span><span class="marquee__item">Tudor</span><span class="marquee__item">Cartier</span><span class="marquee__item">Omega</span><span class="marquee__item">TAG Heuer</span><span class="marquee__item">Messika</span><span class="marquee__item">Pomellato</span><span class="marquee__item">Damiani</span><span class="marquee__item">Dinh Van</span><span class="marquee__item">Roberto Coin</span><span class="marquee__item">Chopard</span><span class="marquee__item">Grau</span>
         </div>
       </div>
     </div>
@@ -90,17 +128,17 @@
         <div class="section__head">
           <div class="reveal">
             <p class="eyebrow">Encuentra tu joya</p>
-            <h2 class="h2">Piezas para <em>cada momento</em></h2>
+            <h2 class="h2">Piezas para cada momento</h2>
           </div>
-          <a class="link-line reveal" href="https://joieriagrau.com/es/10-joyas">Ver todas las novedades</a>
+          <a class="link-line reveal" href="joyas.html">Ver todas las joyas</a>
         </div>
         <div class="cats">
-          <a class="cat reveal" href="https://joieriagrau.com/es/s/43/anillos-grau"><div class="cat__img"><img src="assets/img/anillos.jpg" alt="Anillo de oro amarillo con diamantes" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Anillos <small>01</small></div></a>
-          <a class="cat reveal" data-delay="1" href="https://joieriagrau.com/es/s/46/collares-grau"><div class="cat__img"><img src="assets/img/collares.jpg" alt="Cadena de oro amarillo" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Collares <small>02</small></div></a>
-          <a class="cat reveal" data-delay="2" href="https://joieriagrau.com/es/s/44/pendientes-grau"><div class="cat__img"><img src="assets/img/pendientes.jpg" alt="Pendientes de oro amarillo con piedra central" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Pendientes <small>03</small></div></a>
-          <a class="cat reveal" data-delay="3" href="https://joieriagrau.com/es/s/45/pulseras-grau"><div class="cat__img cat__img--packshot"><img src="assets/img/pulseras.jpg" alt="Pulsera esclava Grau de oro rosa con pavé de diamantes" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Pulseras <small>04</small></div></a>
-          <a class="cat reveal" data-delay="1" href="https://joieriagrau.com/es/20-relojes"><div class="cat__img"><img src="assets/img/relojes.jpg" alt="Reloj de caballero con gemelos" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Relojes <small>05</small></div></a>
-          <a class="cat reveal" data-delay="2" href="https://joieriagrau.com/es/30-accesorios"><div class="cat__img"><img src="assets/img/accesorios.jpg" alt="Tarjetero de piel y pluma Montblanc" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Accesorios <small>06</small></div></a>
+          <a class="cat reveal" href="catalogo.html?seccion=joyas&amp;cat=anillos"><div class="cat__img"><img src="assets/img/anillos.jpg" alt="Anillo de oro amarillo con diamantes" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Anillos <small>01</small></div></a>
+          <a class="cat reveal" data-delay="1" href="catalogo.html?seccion=joyas&amp;cat=collares"><div class="cat__img"><img src="assets/img/collares.jpg" alt="Cadena de oro amarillo" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Collares <small>02</small></div></a>
+          <a class="cat reveal" data-delay="2" href="catalogo.html?seccion=joyas&amp;cat=pendientes"><div class="cat__img"><img src="assets/img/pendientes.jpg" alt="Pendientes de oro amarillo con piedra central" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Pendientes <small>03</small></div></a>
+          <a class="cat reveal" data-delay="3" href="catalogo.html?seccion=joyas&amp;cat=pulseras"><div class="cat__img cat__img--packshot"><img src="assets/img/pulseras.jpg" alt="Pulsera esclava Grau de oro rosa con pavé de diamantes" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Pulseras <small>04</small></div></a>
+          <a class="cat reveal" data-delay="1" href="relojes.html"><div class="cat__img"><img src="assets/img/relojes.jpg" alt="Reloj de caballero con gemelos" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Relojes <small>05</small></div></a>
+          <a class="cat reveal" data-delay="2" href="marcas.html#accesorios"><div class="cat__img"><img src="assets/img/accesorios.jpg" alt="Tarjetero de piel y pluma Montblanc" loading="lazy" decoding="async" width="960" height="1280"></div><div class="cat__label">Accesorios <small>06</small></div></a>
         </div>
       </div>
     </section>
@@ -111,12 +149,12 @@
         <div class="section__head">
           <div class="reveal">
             <p class="eyebrow">Relojería</p>
-            <h2 class="h2">Distribuidores <em>oficiales</em></h2>
+            <h2 class="h2">Distribuidores oficiales</h2>
           </div>
-          <p class="reveal">Las mejores firmas de lujo están en Joyería Grau, con la garantía y el servicio de un distribuidor oficial.</p>
+          <a class="link-line reveal" href="relojes.html">Ver toda la relojería</a>
         </div>
         <div class="duo">
-          <a class="feature feature--rolex reveal" href="https://joieriagrau.com/es/rolex">
+          <a class="feature feature--rolex reveal" href="rolex.html">
             <picture><source media="(max-width: 900px)" srcset="assets/img/rolex-m.jpg" width="1071" height="1300"><img src="assets/img/rolex.jpg" alt="Reloj Rolex Oyster Perpetual Datejust" loading="lazy" decoding="async" width="1880" height="1000"></picture>
             <div class="feature__body">
               <p class="eyebrow eyebrow--plain">Distribuidor oficial</p>
@@ -124,7 +162,7 @@
               <span class="link-line">Descubrir</span>
             </div>
           </a>
-          <a class="feature feature--cartier reveal" data-delay="1" href="https://joieriagrau.com/es/brand/57-cartier">
+          <a class="feature feature--cartier reveal" data-delay="1" href="cartier.html">
             <picture><source media="(max-width: 560px)" srcset="assets/img/cartier-m.jpg" width="1200" height="1350"><img src="assets/img/cartier.jpg" alt="Reloj Santos de Cartier" loading="lazy" decoding="async" width="2000" height="1600"></picture>
             <div class="feature__body">
               <p class="eyebrow eyebrow--plain">Maison Cartier</p>
@@ -142,11 +180,11 @@
       <div class="wrap">
         <div class="promise__body">
           <p class="eyebrow reveal">Compromiso</p>
-          <h2 class="h2 reveal" data-delay="1">El amor está en el aire, <em>no lo dejes escapar.</em></h2>
+          <h2 class="h2 reveal" data-delay="1">El amor está en el aire, no lo dejes escapar.</h2>
           <p class="lead reveal" data-delay="2">Anillos de compromiso y alianzas creados para acompañaros toda la vida. Os asesoramos en boutique, con calma y sin prisas.</p>
           <div class="promise__links reveal" data-delay="3">
-            <a class="btn" href="https://joieriagrau.com/es/content/12-anillos-de-compromiso">Anillos de compromiso <span class="arrow"></span></a>
-            <a class="link-line" href="https://joieriagrau.com/es/content/13-alianzas-de-boda">Alianzas de boda</a>
+            <a class="btn" href="compromiso.html#anillos">Anillos de compromiso <span class="arrow"></span></a>
+            <a class="link-line" href="compromiso.html#alianzas">Alianzas de boda</a>
           </div>
         </div>
       </div>
@@ -158,26 +196,26 @@
         <div class="section__head">
           <div class="reveal">
             <p class="eyebrow">El blog de Grau</p>
-            <h2 class="h2">Historias que <em>brillan</em></h2>
+            <h2 class="h2">Historias que brillan</h2>
           </div>
-          <a class="link-line reveal" href="https://joieriagrau.com/blog/">Ir al blog</a>
+          <a class="link-line reveal" href="blog.html">Ir al blog</a>
         </div>
         <div class="journal">
-          <a class="post reveal" href="https://joieriagrau.com/blog/ana-belen-luce-joyas-grau-en-sesion-fotografica-la-vanguardia/">
+          <a class="post reveal" href="blog/ana-belen-luce-joyas-grau-en-sesion-fotografica-la-vanguardia.html">
             <div class="post__img"><img src="assets/img/blog-anabelen.jpg" alt="Ana Belén con joyas de Grau" loading="lazy" decoding="async" width="1024" height="683"></div>
             <p class="post__tag">Prensa</p>
             <h3 class="h3">Ana Belén luce joyas de Grau para su entrevista en La Vanguardia</h3>
             <p>Una sesión luminosa donde la elegancia cobra todo el protagonismo.</p>
             <span class="link-line">Leer</span>
           </a>
-          <a class="post reveal" data-delay="1" href="https://joieriagrau.com/blog/cartier-santos-diamantes-relojes-lujo/">
+          <a class="post reveal" data-delay="1" href="blog/cartier-santos-diamantes-relojes-lujo.html">
             <div class="post__img"><img src="assets/img/blog-cartier.jpg" alt="Cartier Santos con diamantes" loading="lazy" decoding="async" width="1024" height="683"></div>
             <p class="post__tag">Relojería</p>
             <h3 class="h3">Cartier Santos con diamantes: una combinación perfecta</h3>
             <p>Cómo el Santos con diamantes reinventa un clásico con carácter atemporal.</p>
             <span class="link-line">Leer</span>
           </a>
-          <a class="post reveal" data-delay="2" href="https://joieriagrau.com/blog/joyeria-grau-premios-goya-2026/">
+          <a class="post reveal" data-delay="2" href="blog/joyeria-grau-premios-goya-2026.html">
             <div class="post__img"><img src="assets/img/blog-goya.jpg" alt="Joyas de Grau en los Premios Goya 2026" loading="lazy" decoding="async" width="1024" height="683"></div>
             <p class="post__tag">Alfombra roja</p>
             <h3 class="h3">Grau en los Premios Goya 2026</h3>
@@ -193,8 +231,9 @@
       <div class="wrap nl-band__grid">
         <div class="reveal">
           <p class="eyebrow">La Carta de Grau</p>
-          <h2 class="h2">Lo nuevo, <em>antes que nadie.</em></h2>
-          <p>Nuevas colecciones, presentaciones en boutique y consejos de nuestros joyeros, directamente en tu correo. <a class="link-line" href="newsletter.html" style="margin-left:6px;color:#fff">Saber más</a></p>
+          <h2 class="h2">Lo nuevo, antes que nadie.</h2>
+          <p>Nuevas colecciones, presentaciones en boutique y consejos de nuestros joyeros, directamente en tu correo.</p>
+          <a class="link-line nl-band__more" href="newsletter.html">Saber más sobre La Carta</a>
         </div>
         <div class="nl-box reveal" data-delay="1">
           <form class="nl-form nl-form--dark" novalidate data-source="home">
@@ -209,7 +248,7 @@
             <label class="consent">
               <input type="checkbox" name="consent" required>
               <span class="consent__box"></span>
-              <span>He leído y acepto la <a href="https://joieriagrau.com/es/content/6-politica-de-privacidad" target="_blank" rel="noopener">política de privacidad</a> y quiero recibir comunicaciones de Joieria Grau.</span>
+              <span>He leído y acepto la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y quiero recibir comunicaciones de Joieria Grau.</span>
             </label>
             <p class="consent__error">Necesitamos tu consentimiento para enviarte la newsletter.</p>
           </form>
@@ -224,11 +263,12 @@
     <!-- TIENDAS -->
     <section class="section section--sand" id="tiendas">
       <div class="wrap stores">
-        <div class="stores__img reveal"><picture><source media="(max-width: 900px)" srcset="assets/img/tienda-m.jpg"><img src="assets/img/tienda.jpg" alt="Boutique Grau en Barcelona" loading="lazy" width="1824" height="1168"></picture></div>
+        <div class="stores__img reveal"><img src="assets/img/tienda-m.jpg" alt="Boutique Grau en Barcelona" loading="lazy" decoding="async" width="1004" height="1004"></div>
         <div>
           <p class="eyebrow reveal">Nuestras joyerías</p>
-          <h2 class="h2 reveal" data-delay="1">Visítanos en <em>boutique</em></h2>
+          <h2 class="h2 reveal" data-delay="1">Visítanos en boutique</h2>
           <p class="lead reveal" data-delay="2">Visita tu joyería preferida y recibe asesoramiento personalizado.</p>
+          <a class="link-line reveal" data-delay="2" href="tiendas.html">Direcciones y horarios</a>
           <ul class="store-list">
             <li class="reveal"><a href="https://goo.gl/maps/Z6WxXbZQNmudJMJ86" target="_blank" rel="noopener"><span class="num">01</span><span class="name">Barcelona</span><span class="go">Cómo llegar</span></a></li>
             <li class="reveal"><a href="https://goo.gl/maps/44UuukDzbcVEeRCd7" target="_blank" rel="noopener"><span class="num">02</span><span class="name">Lloret de Mar</span><span class="go">Cómo llegar</span></a></li>
@@ -236,7 +276,7 @@
             <li class="reveal"><a href="https://goo.gl/maps/2Y41hmbwuuz14GYp7" target="_blank" rel="noopener"><span class="num">04</span><span class="name">Blanes</span><span class="go">Cómo llegar</span></a></li>
           </ul>
           <div class="contact-grid reveal">
-            <a href="https://joieriagrau.com/es/content/42-contacto"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Cita previa</a>
+            <a href="cita.html"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Cita previa</a>
             <a href="https://wa.me/34972364222" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M4 20l1.2-4A8 8 0 1 1 8 19z"/></svg>WhatsApp</a>
             <a href="tel:+34935193303"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg>Llámanos</a>
             <a href="mailto:hola@joieriagrau.com"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13"/><path d="M3 6l9 7 9-7"/></svg>Escríbenos</a>
@@ -251,39 +291,42 @@
       <div class="footer__grid">
         <div>
           <img class="footer__logo" src="assets/img/logo.svg" alt="Grau" width="92" height="30">
-          <p style="max-width:32ch">Joyería y Relojería Grau. Alta joyería en Barcelona y Girona.</p>
+          <p style="max-width:32ch">Joyería y relojería desde 1947. Barcelona, Lloret de Mar, Sabadell y Blanes.</p>
         </div>
         <div>
-          <h4>Tienda</h4>
+          <h4>Descubrir</h4>
           <ul>
-            <li><a href="https://joieriagrau.com/es/content/23-coleccion-de-joyas">Joyas</a></li>
-            <li><a href="https://joieriagrau.com/es/20-relojes">Relojes</a></li>
-            <li><a href="https://joieriagrau.com/es/content/11-Compromiso">Compromiso</a></li>
-            <li><a href="https://joieriagrau.com/es/content/56-pre-owned">Pre-owned</a></li>
+            <li><a href="joyas.html">Joyas</a></li>
+            <li><a href="relojes.html">Relojes</a></li>
+            <li><a href="compromiso.html">Compromiso</a></li>
+            <li><a href="pre-owned.html">Pre-owned</a></li>
+            <li><a href="marcas.html">Marcas</a></li>
           </ul>
         </div>
         <div>
           <h4>Grau</h4>
           <ul>
-            <li><a href="#tiendas">Nuestras tiendas</a></li>
-            <li><a href="https://joieriagrau.com/es/content/10-wearegrau">#wearegrau</a></li>
-            <li><a href="https://joieriagrau.com/blog/">Blog</a></li>
+            <li><a href="historia.html">Nuestra historia</a></li>
+            <li><a href="tiendas.html">Nuestras tiendas</a></li>
             <li><a href="newsletter.html">Newsletter</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="index.html">Tienda online</a></li>
           </ul>
         </div>
         <div>
-          <h4>Contacto</h4>
+          <h4>Atención al cliente</h4>
           <ul>
+            <li><a href="cita.html">Pedir cita</a></li>
             <li><a href="tel:+34935193303">+34 935 193 303</a></li>
             <li><a href="https://wa.me/34972364222">WhatsApp</a></li>
             <li><a href="mailto:hola@joieriagrau.com">hola@joieriagrau.com</a></li>
-            <li><a href="https://joieriagrau.com/es/content/42-contacto">Cita previa</a></li>
+            <li>Lunes a sábado, de 10:00 a 20:00 h</li>
           </ul>
         </div>
       </div>
       <div class="footer__bottom">
         <span>© <span data-year>2026</span> Joieria Grau. España. Todos los derechos reservados.</span>
-        <span>Instagram · Facebook · Pinterest</span>
+        <span class="footer__social"><a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="https://www.instagram.com/joieriagrau/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.pinterest.com/joieriagrau/" target="_blank" rel="noopener">Pinterest</a> · <a href="https://www.tiktok.com/@joieriagrau" target="_blank" rel="noopener">TikTok</a></span>
       </div>
     </div>
   </footer>
