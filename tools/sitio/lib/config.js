@@ -55,6 +55,6 @@ module.exports = {
 
   navegacion: {
     izquierda: [["joyas.html", "Joyas"], ["relojes.html", "Relojes"], ["compromiso.html", "Compromiso"], ["marcas.html", "Marcas"]],
-    derecha: [["pre-owned.html", "Pre-owned"], ["tiendas.html", "Tiendas"], ["newsletter.html", "Newsletter"]],
+    derecha: [["pre-owned.html", "Pre-owned"], ["tiendas.html", "Tiendas"]],
   },
 };

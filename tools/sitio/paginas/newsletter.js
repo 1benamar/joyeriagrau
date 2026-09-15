@@ -4,6 +4,7 @@ const C = require("../lib/config");
 module.exports = function (site) {
   site.page("newsletter.html", {
     layout: "landing",
+    sitemap: false,
     title: "La Carta de Grau · Newsletter de Joyería Grau",
     description: "Suscríbete a La Carta de Grau: nuevas colecciones, presentaciones en boutique y consejos de nuestros joyeros, directamente en tu correo.",
     image: { src: "assets/img/newsletter-hero.jpg", width: 1600, height: 2000 },

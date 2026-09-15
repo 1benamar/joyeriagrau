@@ -167,7 +167,6 @@ module.exports = function (site) {
           <p class="eyebrow">La Carta de Grau</p>
           <h2 class="h2">Lo nuevo, antes que nadie.</h2>
           <p>Nuevas colecciones, presentaciones en boutique y consejos de nuestros joyeros, directamente en tu correo.</p>
-          <a class="link-line nl-band__more" href="newsletter.html">Saber más sobre La Carta</a>
         </div>
         <div class="nl-box reveal" data-delay="1">
           ${site.newsletterForm({ id: "home", dark: true, source: "inicio", consentText: "y quiero recibir comunicaciones de Joieria Grau" })}
