@@ -9,7 +9,14 @@ const RAW = path.join(BASE, "raw");
 const HTMLDIR = path.join(BASE, "html");
 fs.mkdirSync(RAW, { recursive: true });
 fs.mkdirSync(HTMLDIR, { recursive: true });
-const URLS = fs.readFileSync(path.join(BASE, "urls-productos.txt"), "utf8").split(/\r?\n/).filter(Boolean);
+// URLs del sitemap más las encontradas en los listados (el sitemap no incluye los productos más recientes)
+const readList = (file) => (fs.existsSync(path.join(BASE, file)) ? fs.readFileSync(path.join(BASE, file), "utf8").split(/\r?\n/).filter(Boolean) : []);
+const byId = new Map();
+for (const u of [...readList("urls-productos.txt"), ...readList("urls-listados.txt")]) {
+  const m = u.match(/\/(\d+)-[^/]+\.html$/);
+  if (m && !byId.has(m[1])) byId.set(m[1], u);
+}
+const URLS = [...byId.values()];
 const CONCURRENCY = +process.argv[2] || 4;
 const LIMIT = +process.argv[3] || URLS.length;
 

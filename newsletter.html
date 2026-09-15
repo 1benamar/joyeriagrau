@@ -5,25 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>La Carta de Grau · Newsletter de Joyería Grau</title>
   <meta name="description" content="Suscríbete a La Carta de Grau: nuevas colecciones, presentaciones en boutique y consejos de nuestros joyeros, directamente en tu correo.">
+  <link rel="canonical" href="https://joieriagrau.com/newsletter.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Joyería Grau">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="La Carta de Grau · Newsletter de Joyería Grau">
+  <meta property="og:description" content="Suscríbete a La Carta de Grau: nuevas colecciones, presentaciones en boutique y consejos de nuestros joyeros, directamente en tu correo.">
+  <meta property="og:url" content="https://joieriagrau.com/newsletter.html">
+  <meta property="og:image" content="https://joieriagrau.com/assets/img/newsletter-hero.jpg">
+  <meta property="og:image:width" content="1600">
+  <meta property="og:image:height" content="2000">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#f7f3ec">
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260914e">
-  <script defer src="main.js?v=20260914e"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&amp;family=Playfair+Display:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=4c7e806086">
+  <script defer src="main.js?v=4c7e806086"></script>
 </head>
 <body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
   <header class="lp-header">
     <div class="wrap">
-      <a href="index.html" aria-label="Grau — inicio"><img src="assets/img/logo.svg" alt="Grau" width="92" height="30"></a>
+      <a href="index.html" aria-label="Grau, ir al inicio"><img src="assets/img/logo.svg" alt="Grau" width="92" height="30"></a>
       <a class="link-line" href="index.html">Volver a la joyería</a>
     </div>
   </header>
 
-  <main>
-    <!-- HERO + FORMULARIO -->
+  <main id="contenido" tabindex="-1">
+
     <section class="lp-hero">
       <div class="lp-hero__media">
         <img src="assets/img/newsletter-hero.jpg" alt="Cadena de oro amarillo sobre un fondo dorado brillante" width="1600" height="2000" fetchpriority="high">
@@ -35,26 +47,27 @@
           <p class="eyebrow reveal">La Carta de Grau</p>
           <h1 class="display reveal" data-delay="1">Lo que brilla,<br>primero en tu correo.</h1>
           <p class="lead reveal" data-delay="2">Nuevas colecciones, presentaciones privadas en boutique y los consejos de nuestros joyeros. Una vez al mes, con el mismo cuidado con el que elegimos cada pieza.</p>
-
-          <form class="nl-form reveal" data-delay="3" novalidate data-source="landing-hero">
+          <div class="reveal" data-delay="3">
+          <form class="nl-form" novalidate data-form="newsletter">
+            <input type="hidden" name="tipo" value="newsletter">
+            <input type="hidden" name="origen" value="newsletter">
+            <div class="hp-field" aria-hidden="true"><label for="lp-web">No rellenar</label><input type="text" id="lp-web" name="web" tabindex="-1" autocomplete="off"></div>
             <div class="field">
-              <input type="text" id="lp-nombre" name="nombre" placeholder=" " autocomplete="given-name">
+              <input type="text" id="lp-nombre" name="nombre" placeholder=" " autocomplete="given-name" maxlength="80">
               <label for="lp-nombre">Nombre</label>
             </div>
             <div class="field">
-              <input type="email" id="lp-email" name="email" placeholder=" " autocomplete="email" required>
+              <input type="email" id="lp-email" name="email" placeholder=" " autocomplete="email" required maxlength="160" aria-describedby="lp-email-error">
               <label for="lp-email">Correo electrónico *</label>
-              <p class="field__error">Introduce un correo válido.</p>
+              <p class="field__error" id="lp-email-error">Introduce un correo válido.</p>
             </div>
-
             <fieldset class="chips">
               <legend>¿Qué te interesa?</legend>
-              <label class="chip"><input type="checkbox" name="intereses" value="joyeria" checked><span>Joyería</span></label>
-              <label class="chip"><input type="checkbox" name="intereses" value="relojeria"><span>Relojería</span></label>
-              <label class="chip"><input type="checkbox" name="intereses" value="compromiso"><span>Compromiso</span></label>
-              <label class="chip"><input type="checkbox" name="intereses" value="pre-owned"><span>Pre-owned</span></label>
+              <label class="chip"><input type="checkbox" name="intereses[]" value="joyeria" checked><span>Joyería</span></label>
+              <label class="chip"><input type="checkbox" name="intereses[]" value="relojeria"><span>Relojería</span></label>
+              <label class="chip"><input type="checkbox" name="intereses[]" value="compromiso"><span>Compromiso</span></label>
+              <label class="chip"><input type="checkbox" name="intereses[]" value="pre-owned"><span>Pre-owned</span></label>
             </fieldset>
-
             <div class="field">
               <select id="lp-tienda" name="tienda">
                 <option value="">Sin preferencia</option>
@@ -66,29 +79,27 @@
               </select>
               <label for="lp-tienda">Tu boutique preferida</label>
             </div>
-
             <label class="consent">
-              <input type="checkbox" name="consent" required>
+              <input type="checkbox" name="consent" value="1" required aria-describedby="lp-consent-error">
               <span class="consent__box"></span>
               <span>He leído y acepto la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y quiero recibir comunicaciones comerciales de Joieria Grau.</span>
             </label>
-            <p class="consent__error">Necesitamos tu consentimiento para enviarte la newsletter.</p>
-
+            <p class="consent__error" id="lp-consent-error">Necesitamos tu consentimiento para enviarte la newsletter.</p>
             <button class="btn btn--full" type="submit">Suscribirme a La Carta <span class="arrow"></span></button>
-            <p class="fine">Puedes darte de baja en cualquier momento con un solo clic.</p>
+            <p class="fine">Puedes darte de baja en cualquier momento escribiendo a hola@joieriagrau.com.</p>
+            <p class="form-status" role="alert" hidden></p>
           </form>
-
-          <div class="nl-success" role="status">
+          </div>
+          <div class="nl-success" role="status" tabindex="-1">
             <p class="eyebrow">Suscripción recibida</p>
-            <h2 class="h2" style="margin:18px 0 14px">Gracias, te damos la bienvenida.</h2>
-            <p class="lead">Te hemos enviado un correo para confirmar tu dirección. Mientras tanto, puedes descubrir las novedades en la joyería.</p>
-            <a class="btn" href="index.html" style="margin-top:24px">Ver novedades <span class="arrow"></span></a>
+            <h2 class="h2">Gracias, te damos la bienvenida.</h2>
+            <p class="lead">Hemos recibido tu solicitud y te escribiremos con la próxima edición de La Carta. Mientras tanto, puedes descubrir nuestras joyas.</p>
+            <a class="btn" href="joyas.html">Descubrir joyas <span class="arrow"></span></a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CONFIANZA -->
     <div class="proof">
       <div class="wrap">
         <div class="proof__item"><b>Rolex</b><span>Distribuidor oficial</span></div>
@@ -98,7 +109,6 @@
       </div>
     </div>
 
-    <!-- BENEFICIOS -->
     <section class="section">
       <div class="wrap">
         <div class="section__head">
@@ -133,7 +143,6 @@
       </div>
     </section>
 
-    <!-- EJEMPLO DE CARTA -->
     <section class="section section--sand">
       <div class="wrap issue">
         <div class="issue__text">
@@ -151,24 +160,23 @@
           <div class="mail__body">
             <img src="assets/img/logo.svg" alt="" width="68" height="22">
             <p class="mail__date">Septiembre 2026</p>
-            <div class="mail__hero"><img src="assets/img/alianzas.jpg" alt="" loading="lazy"></div>
-            <h3 class="h3">El oro que os acompaña</h3>
+            <div class="mail__hero"><img src="assets/img/alianzas.jpg" alt="" width="2000" height="1075" loading="lazy" decoding="async"></div>
+            <p class="mail__title">El oro que os acompaña</p>
             <p>Descubre la nueva selección de alianzas y cómo elegir la vuestra.</p>
             <span class="mail__btn">Descubrir</span>
             <div class="mail__cols">
-              <div><img src="assets/img/anillos.jpg" alt="" loading="lazy"><span>Anillos</span></div>
-              <div><img src="assets/img/collares.jpg" alt="" loading="lazy"><span>Collares</span></div>
-              <div><img src="assets/img/pulseras.jpg" alt="" loading="lazy"><span>Pulseras</span></div>
+              <div><img src="assets/img/anillos.jpg" alt="" width="960" height="1280" loading="lazy" decoding="async"><span>Anillos</span></div>
+              <div><img src="assets/img/collares.jpg" alt="" width="960" height="1280" loading="lazy" decoding="async"><span>Collares</span></div>
+              <div><img src="assets/img/pulseras.jpg" alt="" width="960" height="1280" loading="lazy" decoding="async"><span>Pulseras</span></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FAQ -->
     <section class="section section--paper">
       <div class="wrap">
-        <div class="section__head" style="justify-content:center;text-align:center">
+        <div class="section__head section__head--center">
           <div class="reveal">
             <p class="eyebrow eyebrow--plain">Preguntas frecuentes</p>
             <h2 class="h2">Antes de suscribirte</h2>
@@ -181,11 +189,11 @@
           </details>
           <details>
             <summary>¿Puedo darme de baja cuando quiera?</summary>
-            <p>Sí. Cada correo incluye un enlace para darte de baja con un solo clic, sin necesidad de escribirnos.</p>
+            <p>Sí. Puedes pedir la baja en cualquier momento respondiendo a cualquiera de nuestros correos o escribiendo a <a href="mailto:hola@joieriagrau.com">hola@joieriagrau.com</a>.</p>
           </details>
           <details>
             <summary>¿Qué hacéis con mis datos?</summary>
-            <p>Usamos tu correo únicamente para enviarte La Carta de Grau. No compartimos tus datos con terceros. Puedes consultar todos los detalles en nuestra <a class="link-line" href="privacidad.html" target="_blank" rel="noopener" style="letter-spacing:.1em">política de privacidad</a>.</p>
+            <p>Usamos tu correo únicamente para enviarte La Carta de Grau. No compartimos tus datos con terceros. Puedes consultar todos los detalles en nuestra <a href="privacidad.html">política de privacidad</a>.</p>
           </details>
           <details>
             <summary>¿Para qué sirve elegir mi boutique?</summary>
@@ -195,32 +203,36 @@
       </div>
     </section>
 
-    <!-- CTA FINAL -->
     <section class="section final">
       <div class="wrap">
         <p class="eyebrow reveal">Únete</p>
-        <h2 class="h2 reveal" data-delay="1">La próxima carta sale este mes.</h2>
+        <h2 class="h2 reveal" data-delay="1">Recibe la próxima carta.</h2>
         <p class="reveal" data-delay="2">Déjanos tu correo y recíbela junto a quienes ya forman parte de Grau.</p>
         <div class="nl-box reveal" data-delay="3">
-          <form class="nl-form nl-form--dark" novalidate data-source="landing-final">
+          <form class="nl-form nl-form--dark" novalidate data-form="newsletter">
+            <input type="hidden" name="tipo" value="newsletter">
+            <input type="hidden" name="origen" value="newsletter-final">
+            <div class="hp-field" aria-hidden="true"><label for="final-web">No rellenar</label><input type="text" id="final-web" name="web" tabindex="-1" autocomplete="off"></div>
             <div class="nl-form__row">
-              <div class="field">
-                <input type="email" id="final-email" name="email" placeholder=" " autocomplete="email" required>
-                <label for="final-email">Tu correo electrónico</label>
-                <p class="field__error">Introduce un correo válido.</p>
-              </div>
+            <div class="field">
+              <input type="email" id="final-email" name="email" placeholder=" " autocomplete="email" required maxlength="160" aria-describedby="final-email-error">
+              <label for="final-email">Tu correo electrónico</label>
+              <p class="field__error" id="final-email-error">Introduce un correo válido.</p>
+            </div>
               <button class="btn btn--light" type="submit">Suscribirme</button>
             </div>
             <label class="consent">
-              <input type="checkbox" name="consent" required>
+              <input type="checkbox" name="consent" value="1" required aria-describedby="final-consent-error">
               <span class="consent__box"></span>
               <span>He leído y acepto la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</span>
             </label>
-            <p class="consent__error">Necesitamos tu consentimiento para enviarte la newsletter.</p>
+            <p class="consent__error" id="final-consent-error">Necesitamos tu consentimiento para enviarte la newsletter.</p>
+            
+            <p class="form-status" role="alert" hidden></p>
           </form>
-          <div class="nl-success" role="status" style="text-align:center">
+          <div class="nl-success nl-success--center" role="status" tabindex="-1">
             <h3 class="h3">Gracias por suscribirte.</h3>
-            <p style="margin:8px auto 0">Revisa tu correo para confirmar la suscripción.</p>
+            <p>Hemos recibido tu solicitud. Te escribiremos con la próxima edición.</p>
           </div>
         </div>
       </div>
@@ -229,8 +241,8 @@
 
   <footer class="lp-footer">
     <div class="wrap">
-      <span>© <span data-year>2026</span> Joieria Grau. España.</span>
-      <nav>
+      <p>© <span data-year>2026</span> Joieria Grau. España.</p>
+      <nav aria-label="Enlaces del pie">
         <a href="index.html">Inicio</a>
         <a href="tiendas.html">Tiendas</a>
         <a href="cita.html">Pedir cita</a>

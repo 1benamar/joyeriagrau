@@ -1,4 +1,5 @@
 // Recorre listados y selecciones de joieriagrau.com y guarda qué productos pertenecen a cada uno.
+// También anota la URL de cada producto: el sitemap de la tienda no incluye los productos más recientes.
 const fs = require("fs");
 const path = require("path");
 const { execFile } = require("child_process");
@@ -41,21 +42,25 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const result = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, "utf8")) : {};
   for (const [key, slug] of Object.entries(LISTS)) {
     if (result[key] && result[key].done) continue;
-    const ids = []; let total = null;
+    const ids = []; const urls = {}; let total = null;
     for (let page = 1; page < 200; page++) {
       const url = `https://joieriagrau.com/es/${slug}?resultsPerPage=96&page=${page}`;
       let html = "";
       for (let a = 0; a < 3 && !/js-product-miniature|Hay \d+ productos|no hay productos/i.test(html); a++) { html = await curl(url); if (!html) await sleep(4000); }
       const m = html.match(/Hay (\d+) productos?/); if (m) total = +m[1];
       const pageIds = [...html.matchAll(/js-product-miniature" data-id-product="(\d+)"/g)].map((x) => +x[1]);
+      for (const x of html.matchAll(/<a href="(https:\/\/joieriagrau\.com\/es\/[^"]+\/(\d+)-[^"/]+\.html)" class="thumbnail product-thumbnail"/g)) urls[x[2]] = x[1];
       const fresh = pageIds.filter((id) => !ids.includes(id));
       ids.push(...fresh);
       await sleep(900);
       if (!fresh.length || (total && ids.length >= total)) break;
     }
-    result[key] = { slug, total, ids, done: true };
+    result[key] = { slug, total, ids, urls, done: true };
     fs.writeFileSync(OUT, JSON.stringify(result));
     console.log(`${key}: ${ids.length}${total ? " / " + total : ""}`);
   }
+  const all = {};
+  for (const l of Object.values(result)) Object.assign(all, l.urls || {});
+  fs.writeFileSync(path.join(__dirname, "_datos", "urls-listados.txt"), Object.values(all).join("\n"));
   console.log("FIN listados");
 })();

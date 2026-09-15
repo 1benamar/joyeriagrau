@@ -2,8 +2,12 @@
 (function () {
   "use strict";
 
-  var DATA_URL = "data/catalogo.json";
-  var PRODUCT_URL = function (id) { return "data/productos/" + id + ".json"; };
+  // Rutas relativas a la carpeta de este script
+  var script = document.currentScript || document.querySelector('script[src*="catalogo.js"]');
+  var BASE = script ? script.src.replace(/catalogo\.js(\?.*)?$/, "") : "";
+  var DATA_URL = BASE + "data/catalogo.json";
+  var PRODUCT_URL = function (id) { return BASE + "data/productos/" + id + ".json"; };
+  var BRAND_URL = function (key) { return BASE + "data/marcas/" + key + ".json"; };
   var IMG = function (imgId, slug, size) { return "https://joieriagrau.com/" + imgId + "-" + (size || "medium_default") + "/" + slug + ".jpg"; };
   var WHATSAPP = "34972364222";
   var PAGE = 48;
@@ -31,6 +35,7 @@
     { key: "stock", label: "Disponibilidad", values: { "1": "Solo en stock" } }
   ];
   var LISTS = { novedades: "Novedades", promociones: "Promociones", "mas-vendidos": "Los más vendidos" };
+  var TIPO_TITLES = { automatico: "Relojes automáticos", cuarzo: "Relojes de cuarzo", cuerda: "Relojes de cuerda manual", smartwatch: "Smartwatches" };
   var SORTS = { destacados: "Destacados", "precio-asc": "Precio: de menor a mayor", "precio-desc": "Precio: de mayor a menor", nombre: "Nombre: A – Z" };
 
   var money = function (n) {
@@ -178,7 +183,7 @@
         var open = state[g.key].length || ["cat", "marca", "tipo"].indexOf(g.key) >= 0;
         var many = g.brands && entries.length > 10;
         html += '<details class="filter"' + (open ? " open" : "") + '><summary>' + g.label + (state[g.key].length ? " <b>(" + state[g.key].length + ")</b>" : "") + "</summary>" +
-          (many ? '<input class="filter__search" type="search" placeholder="Buscar marca" data-brand-search>' : "") +
+          (many ? '<input class="filter__search" type="search" placeholder="Buscar marca" aria-label="Buscar marca" data-brand-search>' : "") +
           '<ul class="filter__list' + (many ? " filter__list--scroll" : "") + '">' +
           entries.map(function (e) {
             var checked = state[g.key].indexOf(e[0]) >= 0;
@@ -213,10 +218,10 @@
       if (state.lista) title = LISTS[state.lista] || title;
       if (state.coleccion.length === 1) title = "Colección " + labelFor("coleccion", state.coleccion[0]);
       else if (state.cat.length === 1) title = labelFor("cat", state.cat[0]);
-      else if (state.tipo.length === 1) title = "Relojes " + labelFor("tipo", state.tipo[0]).toLowerCase();
-      if (state.ocasion.length === 1 && !state.cat.length) title = (sec ? sec.label : "Joyas") + " · " + labelFor("ocasion", state.ocasion[0]);
+      else if (state.tipo.length === 1) title = TIPO_TITLES[state.tipo[0]] || title;
+      if (state.ocasion.length === 1) title = (state.cat.length === 1 ? labelFor("cat", state.cat[0]) : (sec ? sec.label : "Tienda")) + " · " + labelFor("ocasion", state.ocasion[0]);
       if (state.para.length === 1) title += " para " + labelFor("para", state.para[0]).toLowerCase();
-      if (state.marca.length === 1) title += " " + (brands[state.marca[0]] || state.marca[0]);
+      if (state.marca.length === 1 && brands[state.marca[0]]) title += " " + brands[state.marca[0]];
       if (state.q && !state.marca.length && !state.cat.length) title = "Resultados para «" + state.q + "»";
       titleEl.textContent = title;
       leadEl.textContent = sec ? sec.lead : "Joyas, relojes y accesorios de Joyería Grau y de las mejores firmas internacionales.";
@@ -238,20 +243,26 @@
       renderFilters();
       renderActive();
       writeState();
-      if (!results.length) grid.innerHTML = '<div class="catalog__empty"><h3 class="h3">No hemos encontrado productos</h3><p>Prueba a quitar algún filtro o a buscar otra palabra. También puedes preguntarnos: te ayudamos a encontrar la pieza.</p><div class="split__actions"><button type="button" class="btn btn--ghost" data-clear>Borrar filtros</button><a class="btn" href="https://wa.me/' + WHATSAPP + '">Preguntar por WhatsApp</a></div></div>';
+      if (!results.length) grid.innerHTML = '<div class="catalog__empty"><h3 class="h3">No hemos encontrado productos</h3><p>Prueba a quitar algún filtro o a buscar otra palabra. También puedes preguntarnos: te ayudamos a encontrar la pieza.</p><div class="split__actions"><button type="button" class="btn btn--ghost" data-clear>Borrar filtros</button><a class="btn" href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">Preguntar por WhatsApp</a></div></div>';
       if (resetScroll) { var top = root.getBoundingClientRect().top + window.scrollY - 120; if (window.scrollY > top) window.scrollTo({ top: top, behavior: "smooth" }); }
     }
 
     function renderMore() {
       var next = results.slice(shown, shown + PAGE);
       grid.insertAdjacentHTML("beforeend", next.map(function (p) { return cardHTML(p, brands); }).join(""));
+      var firstNew = grid.children[shown];
       shown += next.length;
       moreBtn.hidden = shown >= results.length;
       progress.textContent = results.length ? "Mostrando " + shown.toLocaleString("es-ES") + " de " + results.length.toLocaleString("es-ES") : "";
+      return firstNew;
     }
 
     // Eventos
-    moreBtn.addEventListener("click", renderMore);
+    moreBtn.addEventListener("click", function () {
+      // Al cargar más, el foco pasa al primer producto nuevo para no perder la posición con el teclado
+      var firstNew = renderMore();
+      if (firstNew) firstNew.focus({ preventScroll: true });
+    });
     filtersEl.addEventListener("change", function (e) {
       var input = e.target.closest("input[data-key]");
       if (!input) return;
@@ -301,18 +312,24 @@
 
     // Panel de filtros en móvil
     var openBtn = root.querySelector("[data-filters-open]");
+    var closeBtn = filtersEl.querySelector(".filters__close");
+    var panelOpen = false;
     function setPanel(open) {
+      panelOpen = open;
       filtersEl.classList.toggle("is-open", open);
       document.body.style.overflow = open ? "hidden" : "";
       if (openBtn) openBtn.setAttribute("aria-expanded", String(open));
+      if (open && closeBtn) setTimeout(function () { closeBtn.focus(); }, 60);
+      else if (!open && openBtn && filtersEl.contains(document.activeElement)) openBtn.focus();
     }
     if (openBtn) openBtn.addEventListener("click", function () { setPanel(true); });
     [].forEach.call(filtersEl.querySelectorAll("[data-filters-close]"), function (b) { b.addEventListener("click", function () { setPanel(false); }); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && panelOpen) setPanel(false); });
+    window.addEventListener("resize", function () { if (panelOpen && window.innerWidth > 900) setPanel(false); });
 
     grid.innerHTML = '<p class="catalog__loading">Cargando el catálogo…</p>';
     loadCatalog().then(function (data) {
       DB = data.items; brands = data.brands;
-      if (state.marca.length) state.marca = state.marca.filter(function (m) { return brands[m]; });
       run(false);
     }).catch(function () {
       grid.innerHTML = '<div class="catalog__empty"><h3 class="h3">No se ha podido cargar el catálogo</h3><p>Vuelve a intentarlo en unos segundos o escríbenos por WhatsApp y te ayudamos.</p></div>';
@@ -326,100 +343,134 @@
     var root = document.querySelector("[data-product]");
     if (!root) return;
     var id = +new URLSearchParams(location.search).get("id");
-    var fail = function () {
-      root.innerHTML = '<div class="wrap catalog__empty" style="padding:80px 0"><h1 class="h2">No encontramos este producto</h1><p>Puede que ya no esté disponible. Explora el catálogo o pregúntanos por WhatsApp.</p><div class="split__actions"><a class="btn" href="catalogo.html">Ver el catálogo</a><a class="btn btn--ghost" href="https://wa.me/' + WHATSAPP + '">WhatsApp</a></div></div>';
-    };
+
+    function setHead(title, description, noindex) {
+      document.title = title;
+      var meta = document.querySelector('meta[name="description"]');
+      if (meta && description) meta.setAttribute("content", description);
+      ["og:title", "og:description"].forEach(function (prop, i) {
+        var el = document.querySelector('meta[property="' + prop + '"]');
+        if (el) el.setAttribute("content", i ? description : title);
+      });
+      var canonical = document.querySelector('link[rel="canonical"]');
+      if (noindex) {
+        if (canonical) canonical.remove();
+        var robots = document.createElement("meta");
+        robots.name = "robots"; robots.content = "noindex";
+        document.head.appendChild(robots);
+      } else if (canonical) {
+        canonical.href = canonical.href.split("?")[0] + "?id=" + id;
+        var ogUrl = document.querySelector('meta[property="og:url"]');
+        if (ogUrl) ogUrl.setAttribute("content", canonical.href);
+      }
+    }
+
+    function fail() {
+      setHead("Producto no disponible · Joyería Grau", "Este producto ya no está disponible en Joyería Grau.", true);
+      root.innerHTML = '<div class="wrap catalog__empty catalog__empty--page"><h1 class="h2">No encontramos este producto</h1><p>Puede que ya no esté disponible. Explora el catálogo o pregúntanos por WhatsApp y te ayudamos a encontrar una pieza similar.</p><div class="split__actions"><a class="btn" href="catalogo.html">Ver el catálogo</a><a class="btn btn--ghost" href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">WhatsApp</a></div></div>';
+    }
     if (!id) return fail();
 
-    Promise.all([fetch(PRODUCT_URL(id)).then(function (r) { if (!r.ok) throw 0; return r.json(); }), loadCatalog()]).then(function (res) {
-      var p = res[0], data = res[1], brands = data.brands;
-      var brandName = brands[p.brand] || p.brandName || "";
+    fetch(PRODUCT_URL(id)).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (p) {
+      var brandName = p.brandName || "";
       var sec = SECTIONS[p.sec] ? p.sec : "";
-      document.title = p.name + " · Joyería Grau";
-      var meta = document.querySelector('meta[name="description"]');
-      if (meta && p.short) meta.setAttribute("content", p.short.slice(0, 160));
-
       var images = (p.images || []).map(function (im) { return { large: IMG(im, p.slug, "large_default"), medium: IMG(im, p.slug, "medium_default") }; });
-      var talla = "";
-      var waText = function () {
-        return "Hola, me interesa este producto de Joyería Grau: " + p.name + (p.reference ? " (Ref. " + p.reference + ")" : "") + (talla ? " · " + talla : "") + ". " + location.href;
-      };
-      var catLabel = p.cat ? (function () { for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i].key === "cat" && GROUPS[i].values[p.cat]) return GROUPS[i].values[p.cat]; return ""; })() : "";
+      var catLabel = "";
+      for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i].key === "cat" && GROUPS[i].values[p.cat]) { catLabel = GROUPS[i].values[p.cat]; break; }
       var available = p.stock ? (p.availabilityText || "En stock") : "Consultar disponibilidad";
+      var variant = "";
+
+      setHead(p.name + " · Joyería Grau", (p.short || p.name + (brandName ? " de " + brandName : "") + " en Joyería Grau.").slice(0, 160));
+      var ogImage = document.querySelector('meta[property="og:image"]');
+      if (ogImage && images[0]) {
+        ogImage.setAttribute("content", images[0].large);
+        [].forEach.call(document.querySelectorAll('meta[property^="og:image:"]'), function (m) { m.remove(); });
+      }
+
+      // Datos estructurados del producto
+      var schema = {
+        "@context": "https://schema.org", "@type": "Product", name: p.name,
+        image: images.map(function (im) { return im.large; }),
+        description: p.short || p.description || undefined,
+        sku: p.reference || undefined,
+        brand: brandName ? { "@type": "Brand", name: brandName } : undefined
+      };
+      if (p.price > 0) schema.offers = { "@type": "Offer", priceCurrency: "EUR", price: p.price, availability: "https://schema.org/" + (p.stock ? "InStock" : "OutOfStock"), url: location.href };
+      var ld = document.createElement("script");
+      ld.type = "application/ld+json";
+      ld.textContent = JSON.stringify(schema);
+      document.head.appendChild(ld);
 
       root.innerHTML =
         '<div class="wrap">' +
-        '<nav class="crumbs" aria-label="Ruta"><a href="index.html">Inicio</a><i aria-hidden="true"></i><a href="catalogo.html">Tienda</a>' +
+        '<nav class="crumbs" aria-label="Ruta de navegación"><a href="index.html">Inicio</a><i aria-hidden="true"></i><a href="catalogo.html">Tienda</a>' +
         (sec ? '<i aria-hidden="true"></i><a href="catalogo.html?seccion=' + sec + '">' + SECTIONS[sec].label + "</a>" : "") +
-        (catLabel && sec !== "relojes" ? '<i aria-hidden="true"></i><a href="catalogo.html?seccion=' + sec + "&cat=" + p.cat + '">' + catLabel + "</a>" : "") +
+        (catLabel && sec && sec !== "relojes" ? '<i aria-hidden="true"></i><a href="catalogo.html?seccion=' + sec + "&amp;cat=" + esc(p.cat) + '">' + catLabel + "</a>" : "") +
         '<i aria-hidden="true"></i><span aria-current="page">' + esc(p.name) + "</span></nav>" +
         '<div class="pdp">' +
         '<div class="pdp__gallery">' +
-        '<figure class="pdp__main">' + (images[0] ? '<img src="' + images[0].large + '" alt="' + esc(p.name) + '" width="1200" height="1200" data-main>' : '<span class="pcard__noimg">Grau</span>') + "</figure>" +
-        (images.length > 1 ? '<div class="pdp__thumbs">' + images.map(function (im, i) { return '<button type="button" class="pdp__thumb' + (i ? "" : " is-active") + '" data-large="' + im.large + '" aria-label="Ver imagen ' + (i + 1) + '"><img src="' + im.medium + '" alt="" loading="lazy"></button>'; }).join("") + "</div>" : "") +
+        '<figure class="pdp__main">' + (images[0] ? '<img src="' + images[0].large + '" alt="' + esc(p.name) + '" width="800" height="800" data-main>' : '<span class="pcard__noimg">Grau</span>') + "</figure>" +
+        (images.length > 1 ? '<div class="pdp__thumbs">' + images.map(function (im, n) { return '<button type="button" class="pdp__thumb" aria-pressed="' + !n + '" data-large="' + im.large + '" aria-label="Ver imagen ' + (n + 1) + " de " + images.length + '"><img src="' + im.medium + '" alt="" loading="lazy" decoding="async"></button>'; }).join("") + "</div>" : "") +
         "</div>" +
         '<div class="pdp__info">' +
-        (brandName ? '<a class="pdp__brand" href="catalogo.html?marca=' + p.brand + '">' + esc(brandName) + "</a>" : "") +
+        (brandName ? '<a class="pdp__brand" href="catalogo.html?marca=' + esc(p.brand) + '">' + esc(brandName) + "</a>" : "") +
         '<h1 class="pdp__name">' + esc(p.name) + "</h1>" +
         (p.reference ? '<p class="pdp__ref">Ref. ' + esc(p.reference) + "</p>" : "") +
-        '<p class="pdp__price">' + (p.regularPrice > p.price ? "<s>" + money(p.regularPrice) + "</s> " : "") + money(p.price) + (p.price > 0 ? " <small>IVA incluido</small>" : "") + "</p>" +
+        '<p class="pdp__price">' + (p.regularPrice > p.price ? '<s><span class="sr-only">Antes </span>' + money(p.regularPrice) + "</s> " : "") + money(p.price) + (p.price > 0 ? " <small>IVA incluido</small>" : "") + "</p>" +
         '<p class="pdp__stock' + (p.stock ? " is-in" : "") + '">' + esc(available) + "</p>" +
         (p.short ? '<p class="pdp__short">' + esc(p.short) + "</p>" : "") +
-        (p.variants && p.variants.length ? p.variants.map(function (v) { return '<fieldset class="chips pdp__variants"><legend>' + esc(v.label) + "</legend>" + v.options.map(function (o) { return '<label class="chip"><input type="radio" name="v-' + esc(v.label) + '" value="' + esc(o) + '" data-variant="' + esc(v.label) + '"><span>' + esc(o) + "</span></label>"; }).join("") + "</fieldset>"; }).join("") : "") +
+        (p.variants && p.variants.length ? p.variants.map(function (v, vi) { return '<fieldset class="chips pdp__variants"><legend>' + esc(v.label) + "</legend>" + v.options.map(function (o) { return '<label class="chip"><input type="radio" name="variante-' + vi + '" value="' + esc(o) + '" data-variant="' + esc(v.label) + '"><span>' + esc(o) + "</span></label>"; }).join("") + "</fieldset>"; }).join("") : "") +
         '<div class="pdp__actions">' +
-        '<a class="btn btn--full" data-wa target="_blank" rel="noopener" href="#">Reservar por WhatsApp <span class="arrow"></span></a>' +
-        '<a class="btn btn--ghost btn--full" href="cita.html?producto=' + p.id + (sec === "relojes" ? "&servicio=relojes" : sec === "preowned" ? "&servicio=preowned" : "&servicio=joyas") + '">Pedir cita para verlo en boutique</a>' +
+        '<a class="btn btn--full" data-wa target="_blank" rel="noopener" href="https://wa.me/' + WHATSAPP + '">Reservar por WhatsApp <span class="arrow"></span></a>' +
+        '<a class="btn btn--ghost btn--full" href="cita.html?producto=' + p.id + "&amp;servicio=" + (sec === "relojes" ? "relojes" : sec === "preowned" ? "preowned" : "joyas") + '">Pedir cita para verlo en boutique</a>' +
         "</div>" +
         '<ul class="pdp__perks">' +
         "<li>Asesoramiento personalizado de nuestro equipo</li>" +
         "<li>Consulta disponibilidad en nuestras 4 boutiques</li>" +
         "<li>Envío gratuito en pedidos superiores a 75 €</li>" +
-        "<li>¿Dudas? Llámanos al <a href=\"tel:+34935193303\">935 193 303</a></li>" +
+        '<li>¿Dudas? Llámanos al <a href="tel:+34935193303">935 193 303</a></li>' +
         "</ul>" +
         '<div class="pdp__acc">' +
         (p.description ? '<details open><summary>Descripción</summary><div class="prose">' + p.description.split("\n").map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + "</div></details>" : "") +
-        '<details' + (p.description ? "" : " open") + '><summary>Más información</summary><dl class="store-info pdp__specs">' +
+        "<details" + (p.description ? "" : " open") + '><summary>Más información</summary><dl class="store-info pdp__specs">' +
         (p.reference ? "<dt>Referencia</dt><dd>" + esc(p.reference) + "</dd>" : "") +
         (brandName ? "<dt>Marca</dt><dd>" + esc(brandName) + "</dd>" : "") +
         (catLabel ? "<dt>Categoría</dt><dd>" + esc(catLabel) + "</dd>" : "") +
         (p.info || []).map(function (kv) { return "<dt>" + esc(kv[0] || "Detalle") + "</dt><dd>" + esc(kv[1]) + "</dd>"; }).join("") +
-        "</dl>" + (p.sizeGuide ? '<p style="margin-top:14px"><a class="link-line" href="guia-de-tallas.html">Guía de tallas</a></p>' : "") + "</details>" +
+        "</dl>" + (p.sizeGuide ? '<p class="pdp__guide"><a class="link-line" href="guia-de-tallas.html">Guía de tallas</a></p>' : "") + "</details>" +
         '<details><summary>Envíos y devoluciones</summary><div class="prose"><p>Envío gratuito en pedidos superiores a 75 €. Consulta las condiciones completas de <a href="envios.html">envío</a> y de <a href="devoluciones.html">devoluciones</a>.</p></div></details>' +
         "</div></div></div></div>";
 
       // Galería
       var main = root.querySelector("[data-main]");
       root.addEventListener("click", function (e) {
-        var t = e.target.closest(".pdp__thumb");
-        if (!t || !main) return;
-        main.src = t.getAttribute("data-large");
-        [].forEach.call(root.querySelectorAll(".pdp__thumb"), function (b) { b.classList.toggle("is-active", b === t); });
+        var thumb = e.target.closest(".pdp__thumb");
+        if (!thumb || !main) return;
+        main.src = thumb.getAttribute("data-large");
+        [].forEach.call(root.querySelectorAll(".pdp__thumb"), function (b) { b.setAttribute("aria-pressed", String(b === thumb)); });
       });
-      // WhatsApp con el producto y la talla elegida
+
+      // WhatsApp con el producto y la variante elegida
       var wa = root.querySelector("[data-wa]");
-      var updateWa = function () { wa.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(waText()); };
+      var updateWa = function () {
+        var text = "Hola, me interesa este producto de Joyería Grau: " + p.name + (p.reference ? " (Ref. " + p.reference + ")" : "") + (variant ? " · " + variant : "") + ". " + location.href;
+        wa.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(text);
+      };
       root.addEventListener("change", function (e) {
-        var v = e.target.closest("[data-variant]");
-        if (v) { talla = v.getAttribute("data-variant") + ": " + v.value; updateWa(); }
+        var input = e.target.closest("[data-variant]");
+        if (input) { variant = input.getAttribute("data-variant") + ": " + input.value; updateWa(); }
       });
       updateWa();
 
-      // Relacionados
-      var byId = {};
-      data.items.forEach(function (it) { byId[it[I.id]] = it; });
-      var rel = (p.related || []).map(function (rid) { return byId[rid]; }).filter(Boolean);
-      if (rel.length < 8) {
-        data.items.forEach(function (it) {
-          if (rel.length >= 8 || it[I.id] === p.id || rel.indexOf(it) >= 0) return;
-          if (it[I.brand] === p.brand && it[I.sec] === p.sec && it[I.stock]) rel.push(it);
-        });
-      }
+      // Relacionados (vienen resueltos en la ficha)
+      var related = p.relatedItems || [];
       var relEl = document.querySelector("[data-related]");
-      if (relEl && rel.length) {
+      if (relEl && related.length) {
         relEl.hidden = false;
-        relEl.querySelector("[data-related-grid]").innerHTML = rel.slice(0, 8).map(function (it) { return cardHTML(it, brands); }).join("");
+        relEl.querySelector("[data-related-grid]").innerHTML = related.map(function (it) { return cardHTML(it, p.relatedBrands || {}); }).join("");
         var more = relEl.querySelector("[data-related-more]");
-        if (more && p.brand) { more.href = "catalogo.html?marca=" + p.brand; more.textContent = "Ver todo " + brandName; }
+        if (more && p.brand && brandName) { more.href = "catalogo.html?marca=" + encodeURIComponent(p.brand); more.textContent = "Ver todo " + brandName; }
+        else if (more && sec) more.href = "catalogo.html?seccion=" + sec;
       }
     }).catch(fail);
   }
@@ -430,32 +481,31 @@
     if (!box) return;
     var id = +new URLSearchParams(location.search).get("producto");
     if (!id) return;
-    fetch(PRODUCT_URL(id)).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (p) {
+    fetch(PRODUCT_URL(id)).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (p) {
       box.hidden = false;
       box.innerHTML = (p.images && p.images[0] ? '<img src="' + IMG(p.images[0], p.slug) + '" alt="" width="80" height="80">' : "") +
-        '<div><small>Producto que quieres ver</small><b>' + esc(p.name) + "</b>" + (p.reference ? "<span>Ref. " + esc(p.reference) + "</span>" : "") + "</div>" +
+        "<div><small>Producto que quieres ver</small><b>" + esc(p.name) + "</b>" + (p.reference ? "<span>Ref. " + esc(p.reference) + "</span>" : "") + "</div>" +
         '<input type="hidden" name="producto" value="' + esc(p.name + (p.reference ? " (Ref. " + p.reference + ")" : "") + " · id " + p.id) + '">';
-    }).catch(function () {});
+    }).catch(function () { box.hidden = true; });
   }
 
-  /* Rejilla de productos de una marca (páginas de marca) */
+  /* Selección de productos de una marca (páginas de marca) */
   function initBrandGrid() {
-    var grids = document.querySelectorAll("[data-brand-grid]");
-    if (!grids.length) return;
-    loadCatalog().then(function (data) {
-      [].forEach.call(grids, function (grid) {
-        var key = grid.getAttribute("data-brand-grid");
-        var limit = +grid.getAttribute("data-limit") || 8;
-        var list = data.items.filter(function (p) { return p[I.brand] === key; })
-          .sort(function (a, b) { return (b[I.stock] - a[I.stock]) || (a[I.rank] - b[I.rank]); }).slice(0, limit);
-        grid.innerHTML = list.length ? list.map(function (p) { return cardHTML(p, data.brands); }).join("") : '<p class="catalog__empty">Consulta los modelos disponibles en boutique.</p>';
+    [].forEach.call(document.querySelectorAll("[data-brand-grid]"), function (grid) {
+      var key = grid.getAttribute("data-brand-grid");
+      fetch(BRAND_URL(key)).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (data) {
+        grid.innerHTML = data.items.length
+          ? data.items.map(function (p) { return cardHTML(p, data.brands); }).join("")
+          : '<p class="catalog__empty">Consulta los modelos disponibles en boutique.</p>';
+      }).catch(function () {
+        grid.innerHTML = '<p class="catalog__empty">No se ha podido cargar la selección. <a class="link-line" href="catalogo.html?marca=' + esc(key) + '">Ver en la tienda</a></p>';
       });
-    }).catch(function () { [].forEach.call(grids, function (g) { g.innerHTML = ""; }); });
+    });
   }
 
   function boot() {
     if (location.hash === "#buscar") { var s = document.querySelector("[data-search]"); if (s) setTimeout(function () { s.focus(); }, 300); }
-    [initListing, initProduct, initCitaProduct, initBrandGrid].forEach(function (fn) { try { fn(); } catch (e) { if (window.console) console.warn("[catálogo]", e); } });
+    [initListing, initProduct, initCitaProduct, initBrandGrid].forEach(function (fn) { try { fn(); } catch (e) { if (window.console) console.error("[catálogo]", e); } });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();

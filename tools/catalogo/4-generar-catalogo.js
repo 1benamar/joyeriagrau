@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const RAW = path.join(__dirname, "_datos", "raw");
 const OUT = path.join(__dirname, "..", "..", "data");
-fs.mkdirSync(path.join(OUT, "productos"), { recursive: true });
 
 const lists = fs.existsSync(path.join(__dirname, "_datos", "lists.json")) ? JSON.parse(fs.readFileSync(path.join(__dirname, "_datos", "lists.json"), "utf8")) : {};
 const inList = {};
@@ -38,8 +37,14 @@ const LIST_TAG = {
   "novedades": "l-novedades", "promociones": "l-promociones", "mas-vendidos": "l-mas-vendidos",
 };
 
+// Algunas descripciones de la tienda original arrastran texto pegado de buscadores o traductores: se corta ahí
+const cleanText = (text) => String(text || "").split(/Abrir en el Traductor de Google|Danos tu opinión/)[0].replace(/https?:\/\/\S+/g, "").replace(/[ \t]{2,}/g, " ").trim();
+
+const WATCH_BRANDS =new Set(["rolex", "tudor", "omega", "longines", "tissot", "rado", "hamilton", "nomos", "hublot", "seiko", "casio", "g-shock", "garmin", "tag-heuer", "baume-et-mercier"]);
+
 const brands = {};
 const items = [];
+const details = [];
 let written = 0, skipped = 0;
 const files = fs.readdirSync(RAW).filter((f) => f.endsWith(".json"));
 
@@ -48,7 +53,10 @@ for (const f of files) {
   if (r.missing || !r.name) { skipped++; continue; }
   const memb = inList[r.id] || {};
 
-  let [sec, cat] = CAT_FROM_SLUG[r.catSlug] || ["joyas", ""];
+  // Algunos productos recientes cuelgan de "inicio": la sección se deduce de los listados, la marca o el nombre
+  let [sec, cat] = CAT_FROM_SLUG[r.catSlug] ||
+    (memb["cat-relojes"] !== undefined || WATCH_BRANDS.has(r.brandSlug) || /\breloj/i.test(r.name) ? ["relojes", "relojes"]
+      : memb["cat-accesorios"] !== undefined ? ["accesorios", ""] : ["joyas", ""]);
   if (memb["preowned"] !== undefined || r.catSlug === "pre-owned") {
     sec = "preowned";
     cat = memb["preowned-relojes"] !== undefined ? "po-relojes" : memb["preowned-joyas"] !== undefined ? "po-joyas" : (/reloj/i.test(r.name) ? "po-relojes" : "po-joyas");
@@ -85,19 +93,48 @@ for (const f of files) {
 
   items.push([r.id, slug, r.name, brandKey, r.price || 0, r.regularPrice && r.regularPrice > (r.price || 0) ? r.regularPrice : 0, sec, cat, [...tags].join(" "), imageIds[0] || 0, imageIds[1] || 0, stock, rank]);
 
-  const detail = {
+  details.push({
     id: r.id, slug, name: r.name, brand: brandKey, brandName: brands[brandKey] || "", sec, cat, price: r.price || 0,
     regularPrice: r.regularPrice || 0, stock, availabilityText: r.availabilityText || "", reference: r.reference || "",
-    short: r.short || "", description: r.description && r.description !== r.short ? r.description : "",
+    short: cleanText(r.short), description: r.description && r.description !== r.short ? cleanText(r.description) : "",
     info: r.info || undefined, sizeGuide: r.sizeGuide || undefined, variants: r.variants || undefined,
     images: imageIds, related: r.related || [], tags: [...tags],
-  };
-  fs.writeFileSync(path.join(OUT, "productos", r.id + ".json"), JSON.stringify(detail));
-  written++;
+  });
 }
 
 items.sort((a, b) => a[12] - b[12]);
 const sortedBrands = Object.fromEntries(Object.entries(brands).sort((a, b) => a[1].localeCompare(b[1], "es")));
+
+// Se vacían las carpetas de salida para no dejar fichas de productos retirados
+for (const dir of ["productos", "marcas"]) {
+  const full = path.join(OUT, dir);
+  fs.mkdirSync(full, { recursive: true });
+  for (const f of fs.readdirSync(full)) if (f.endsWith(".json")) fs.unlinkSync(path.join(full, f));
+}
+
+const byId = new Map(items.map((it) => [it[0], it]));
+const brandSubset = (list) => Object.fromEntries([...new Set(list.map((it) => it[3]).filter(Boolean))].map((k) => [k, sortedBrands[k]]));
+
+// Ficha de cada producto con sus relacionados ya resueltos (la ficha no necesita cargar el catálogo completo)
+for (const d of details) {
+  const rel = d.related.map((id) => byId.get(id)).filter(Boolean);
+  for (const it of items) {
+    if (rel.length >= 8) break;
+    if (it[0] !== d.id && it[3] === d.brand && it[6] === d.sec && it[11] && !rel.includes(it)) rel.push(it);
+  }
+  d.relatedItems = rel.slice(0, 8);
+  d.relatedBrands = brandSubset(d.relatedItems);
+  delete d.related;
+  fs.writeFileSync(path.join(OUT, "productos", d.id + ".json"), JSON.stringify(d));
+  written++;
+}
+
+// Selección destacada de cada marca (páginas de marca)
+for (const key of Object.keys(sortedBrands)) {
+  const list = items.filter((it) => it[3] === key).sort((a, b) => (b[11] - a[11]) || (a[12] - b[12])).slice(0, 8);
+  fs.writeFileSync(path.join(OUT, "marcas", key + ".json"), JSON.stringify({ brands: { [key]: sortedBrands[key] }, items: list }));
+}
+
 fs.writeFileSync(path.join(OUT, "catalogo.json"), JSON.stringify({ updated: new Date().toISOString().slice(0, 10), brands: sortedBrands, items }));
 
 const bySec = items.reduce((acc, it) => ((acc[it[6]] = (acc[it[6]] || 0) + 1), acc), {});

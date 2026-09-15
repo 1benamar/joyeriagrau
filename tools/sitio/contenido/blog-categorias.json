@@ -1,0 +1,52 @@
+[
+ {
+  "slug": "joyas",
+  "name": "Joyas",
+  "count": 123
+ },
+ {
+  "slug": "joyas-boda",
+  "name": "Bodas",
+  "count": 29
+ },
+ {
+  "slug": "relojes-rolex",
+  "name": "Rolex",
+  "count": 29
+ },
+ {
+  "slug": "relojes",
+  "name": "Relojes",
+  "count": 26
+ },
+ {
+  "slug": "novedades",
+  "name": "Novedades",
+  "count": 21
+ },
+ {
+  "slug": "joyas-consejos",
+  "name": "Consejos",
+  "count": 14
+ },
+ {
+  "slug": "joieria-grau",
+  "name": "Joieria Grau",
+  "count": 14
+ },
+ {
+  "slug": "joyas-eventos",
+  "name": "Eventos",
+  "count": 8
+ },
+ {
+  "slug": "cartier",
+  "name": "Cartier",
+  "count": 5
+ },
+ {
+  "slug": "joyas-iniciativas",
+  "name": "Iniciativas",
+  "count": 4
+ }
+]
