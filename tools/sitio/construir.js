@@ -46,7 +46,7 @@ function landing(opts) {
   <header class="lp-header">
     <div class="wrap">
       <a href="index.html" aria-label="Grau, ir al inicio"><img src="assets/img/logo.svg" alt="Grau" width="92" height="30"></a>
-      <a class="link-line" href="index.html">Volver a la joyería</a>
+      <a class="link-line" href="index.html">Ir a la joyería</a>
     </div>
   </header>
 
