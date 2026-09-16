@@ -21,23 +21,141 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&amp;family=Playfair+Display:wght@400;500&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=d8fa196a05">
-  <script defer src="main.js?v=d8fa196a05"></script>
+  <link rel="stylesheet" href="styles.css?v=aaa05430d4">
+  <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
+  <script>try{if(!sessionStorage.getItem("grau-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("has-intro");sessionStorage.setItem("grau-intro","1")}}catch(e){}</script>
+  <script defer src="main.js?v=aaa05430d4"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Joyería Grau","url":"https://joieriagrau.com/","logo":"https://joieriagrau.com/assets/img/logo.svg","email":"hola@joieriagrau.com","telephone":"+34 935 193 303","foundingDate":"1947","sameAs":["https://www.instagram.com/joieriagrau/","https://es-es.facebook.com/joieriagrau/","https://www.pinterest.com/joieriagrau/","https://www.tiktok.com/@joieriagrau"],"subOrganization":[{"@type":"JewelryStore","name":"Joyería Grau Barcelona","image":"https://joieriagrau.com/assets/img/tienda-barcelona.jpg","telephone":"+34935193303","url":"https://joieriagrau.com/tiendas.html#barcelona","address":{"@type":"PostalAddress","streetAddress":"Avinguda Diagonal, 538","postalCode":"08006","addressLocality":"Barcelona","addressRegion":"Barcelona","addressCountry":"ES"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"11:00","closes":"20:00"}]},{"@type":"JewelryStore","name":"Joyería Grau Lloret de Mar","image":"https://joieriagrau.com/assets/img/tienda-lloret.jpg","telephone":"+34972364222","url":"https://joieriagrau.com/tiendas.html#lloret","address":{"@type":"PostalAddress","streetAddress":"Carrer de Sant Romà, 22","postalCode":"17310","addressLocality":"Lloret de Mar","addressRegion":"Girona","addressCountry":"ES"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"10:00","closes":"13:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"16:30","closes":"20:00"}]},{"@type":"JewelryStore","name":"Joyería Grau Sabadell","image":"https://joieriagrau.com/assets/img/tienda-sabadell.jpg","telephone":"+34937256574","url":"https://joieriagrau.com/tiendas.html#sabadell","address":{"@type":"PostalAddress","streetAddress":"Passeig de Manresa, 41","postalCode":"08201","addressLocality":"Sabadell","addressRegion":"Barcelona","addressCountry":"ES"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday"],"opens":"17:00","closes":"20:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"10:00","closes":"13:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"17:00","closes":"20:00"}]},{"@type":"JewelryStore","name":"Joyería Grau Blanes","image":"https://joieriagrau.com/assets/img/tienda-blanes.jpg","telephone":"+34972332681","url":"https://joieriagrau.com/tiendas.html#blanes","address":{"@type":"PostalAddress","streetAddress":"Carrer Ample, 32","postalCode":"17300","addressLocality":"Blanes","addressRegion":"Girona","addressCountry":"ES"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"10:00","closes":"13:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"17:00","closes":"20:00"}]}]}</script>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <div class="intro" aria-hidden="true">
+    <div class="intro__inner">
+      <img src="assets/img/logo.svg" alt="" width="92" height="30">
+      <span class="intro__line"></span>
+      <p>Joyería y relojería · Desde 1947</p>
+    </div>
+  </div>
 
   <div class="topbar">Envío gratuito en pedidos superiores a <strong>75 €</strong></div>
 
-  <header class="header">
+  <header class="header header--overlay">
     <div class="wrap header__row">
       <button type="button" class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
       <nav class="nav" aria-label="Principal">
+      <div class="nav__item" data-mega>
         <a href="joyas.html">Joyas</a>
+        <button type="button" class="nav__more" aria-expanded="false" aria-controls="menu-joyas"><span class="sr-only">Mostrar el menú de Joyas</span><svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="mega" id="menu-joyas" data-mega-panel>
+          <div class="wrap mega__grid">
+            <div class="mega__col">
+              <p class="mega__title">Por tipo de joya</p>
+              <ul><li><a href="catalogo.html?seccion=joyas&amp;cat=anillos">Anillos</a></li><li><a href="catalogo.html?seccion=joyas&amp;cat=pendientes">Pendientes</a></li><li><a href="catalogo.html?seccion=joyas&amp;cat=collares">Collares</a></li><li><a href="catalogo.html?seccion=joyas&amp;cat=pulseras">Pulseras</a></li><li><a href="catalogo.html?seccion=joyas&amp;cat=charms">Charms</a></li><li><a href="catalogo.html?seccion=joyas">Todas las joyas</a></li></ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__title">Colecciones Grau</p>
+              <ul><li><a href="catalogo.html?seccion=joyas&amp;coleccion=aura">Aura</a></li><li><a href="catalogo.html?seccion=joyas&amp;coleccion=halo">Halo</a></li><li><a href="catalogo.html?seccion=joyas&amp;coleccion=good-mood">Good Mood</a></li><li><a href="catalogo.html?seccion=joyas&amp;coleccion=my-essence">My Essence</a></li><li><a href="cita.html?servicio=personalizadas">Joyas personalizadas</a></li></ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__title">Firmas de joyería</p>
+              <ul><li><a href="catalogo.html?marca=messika">Messika</a></li><li><a href="catalogo.html?marca=pomellato">Pomellato</a></li><li><a href="catalogo.html?marca=damiani">Damiani</a></li><li><a href="catalogo.html?marca=dinh-van">Dinh Van</a></li><li><a href="catalogo.html?marca=roberto-coin">Roberto Coin</a></li><li><a href="chopard.html">Chopard</a></li></ul>
+            </div>
+            <div class="mega__features mega__features--1">
+              <a class="mega__feature" href="catalogo.html?seccion=joyas&amp;coleccion=aura">
+                <span class="mega__img"><img src="assets/img/joyas-hero-640.jpg" alt="" width="640" height="800" loading="lazy" decoding="async"></span>
+                <span class="mega__meta">Colección insignia desde 1994</span>
+                <span class="mega__name">Colección Aura</span>
+              </a>
+            </div>
+            <a class="mega__all link-line" href="joyas.html">Descubrir la joyería Grau</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item" data-mega>
         <a href="relojes.html">Relojes</a>
+        <button type="button" class="nav__more" aria-expanded="false" aria-controls="menu-relojes"><span class="sr-only">Mostrar el menú de Relojes</span><svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="mega" id="menu-relojes" data-mega-panel>
+          <div class="wrap mega__grid">
+            <div class="mega__col">
+              <p class="mega__title">Distribuidor oficial</p>
+              <ul><li><a href="rolex.html">Rolex</a></li><li><a href="tudor.html">Tudor</a></li><li><a href="cartier.html">Cartier</a></li><li><a href="cita.html?servicio=tecnico">Servicio técnico oficial</a></li></ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__title">Firmas de relojería</p>
+              <ul><li><a href="catalogo.html?marca=omega">Omega</a></li><li><a href="catalogo.html?marca=tag-heuer">TAG Heuer</a></li><li><a href="chopard.html">Chopard</a></li><li><a href="catalogo.html?marca=longines">Longines</a></li><li><a href="catalogo.html?marca=hublot">Hublot</a></li><li><a href="catalogo.html?marca=tissot">Tissot</a></li></ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__title">Encuentra tu reloj</p>
+              <ul><li><a href="catalogo.html?seccion=relojes&amp;para=hombre">Relojes de hombre</a></li><li><a href="catalogo.html?seccion=relojes&amp;para=mujer">Relojes de mujer</a></li><li><a href="catalogo.html?seccion=relojes&amp;tipo=automatico">Automáticos</a></li><li><a href="pre-owned.html">Grau Pre-owned</a></li><li><a href="catalogo.html?seccion=relojes">Todos los relojes</a></li></ul>
+            </div>
+            <div class="mega__features mega__features--1">
+              <a class="mega__feature" href="rolex.html">
+                <span class="mega__img"><img src="assets/img/rolex-m-640.jpg" alt="" width="640" height="777" loading="lazy" decoding="async"></span>
+                <span class="mega__meta">Distribuidor oficial</span>
+                <span class="mega__name">Rolex</span>
+              </a>
+            </div>
+            <a class="mega__all link-line" href="relojes.html">Descubrir la relojería</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item" data-mega>
         <a href="compromiso.html">Compromiso</a>
+        <button type="button" class="nav__more" aria-expanded="false" aria-controls="menu-compromiso"><span class="sr-only">Mostrar el menú de Compromiso</span><svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="mega" id="menu-compromiso" data-mega-panel>
+          <div class="wrap mega__grid">
+            <div class="mega__col">
+              <p class="mega__title">Compromiso y boda</p>
+              <ul><li><a href="compromiso.html#anillos">Anillos de compromiso</a></li><li><a href="compromiso.html#alianzas">Alianzas de boda</a></li><li><a href="compromiso.html#estuche">El estuche Grau</a></li><li><a href="cita.html?servicio=compromiso">Pedir cita de compromiso</a></li></ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__title">El gran día</p>
+              <ul><li><a href="catalogo.html?seccion=joyas&amp;cat=collares&amp;ocasion=novia">Collares de novia</a></li><li><a href="catalogo.html?seccion=joyas&amp;cat=pendientes&amp;ocasion=novia">Pendientes de novia</a></li><li><a href="catalogo.html?cat=gemelos&amp;ocasion=novia">Gemelos de novio</a></li><li><a href="catalogo.html?seccion=relojes&amp;ocasion=compromiso">Relojes de compromiso</a></li></ul>
+            </div>
+            <div class="mega__features mega__features--2">
+              <a class="mega__feature" href="compromiso.html#anillos">
+                <span class="mega__img"><img src="assets/img/comp-hero-640.jpg" alt="" width="640" height="800" loading="lazy" decoding="async"></span>
+                <span class="mega__meta">Hechos a mano en nuestro taller</span>
+                <span class="mega__name">Anillos de compromiso</span>
+              </a>
+              <a class="mega__feature" href="compromiso.html#alianzas">
+                <span class="mega__img"><img src="assets/img/comp-alianzas-640.jpg" alt="" width="640" height="800" loading="lazy" decoding="async"></span>
+                <span class="mega__meta">Oro de 18 k y platino</span>
+                <span class="mega__name">Alianzas de boda</span>
+              </a>
+            </div>
+            <a class="mega__all link-line" href="compromiso.html">Descubrir compromiso y boda</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item" data-mega>
         <a href="marcas.html">Marcas</a>
+        <button type="button" class="nav__more" aria-expanded="false" aria-controls="menu-marcas"><span class="sr-only">Mostrar el menú de Marcas</span><svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="mega" id="menu-marcas" data-mega-panel>
+          <div class="wrap mega__grid">
+            <div class="mega__col">
+              <p class="mega__title">Relojería</p>
+              <ul><li><a href="rolex.html">Rolex</a></li><li><a href="tudor.html">Tudor</a></li><li><a href="cartier.html">Cartier</a></li><li><a href="catalogo.html?marca=omega">Omega</a></li><li><a href="catalogo.html?marca=tag-heuer">TAG Heuer</a></li><li><a href="catalogo.html?marca=longines">Longines</a></li></ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__title">Joyería</p>
+              <ul><li><a href="catalogo.html?marca=grau">Grau</a></li><li><a href="catalogo.html?marca=messika">Messika</a></li><li><a href="catalogo.html?marca=pomellato">Pomellato</a></li><li><a href="catalogo.html?marca=damiani">Damiani</a></li><li><a href="chopard.html">Chopard</a></li><li><a href="catalogo.html?marca=roberto-coin">Roberto Coin</a></li></ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__title">Accesorios</p>
+              <ul><li><a href="catalogo.html?marca=montblanc">Montblanc</a></li><li><a href="catalogo.html?marca=deakin-francis">Deakin &amp; Francis</a></li><li><a href="catalogo.html?seccion=accesorios">Todos los accesorios</a></li></ul>
+            </div>
+            <div class="mega__features mega__features--1">
+              <a class="mega__feature" href="tiendas.html">
+                <span class="mega__img"><img src="assets/img/tienda-m-640.jpg" alt="" width="640" height="640" loading="lazy" decoding="async"></span>
+                <span class="mega__meta">Las maisons, en persona</span>
+                <span class="mega__name">Nuestras boutiques</span>
+              </a>
+            </div>
+            <a class="mega__all link-line" href="marcas.html">Ver todas las marcas</a>
+          </div>
+        </div>
+      </div>
       </nav>
       <a class="header__logo" href="index.html" aria-label="Grau, ir al inicio"><img src="assets/img/logo.svg" alt="Grau" width="92" height="30"></a>
       <nav class="nav nav--right" aria-label="Secundaria">
@@ -49,48 +167,61 @@
       <a class="header__search" href="catalogo.html#buscar" aria-label="Buscar en la tienda"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></a>
     </div>
   </header>
+  <div class="nav-backdrop" data-nav-backdrop hidden></div>
 
   <nav class="drawer" id="drawer" aria-label="Menú móvil">
-    <a href="catalogo.html">Tienda</a>
-    <a href="joyas.html">Joyas</a>
-    <a href="relojes.html">Relojes</a>
-    <a href="compromiso.html">Compromiso</a>
-    <a href="marcas.html">Marcas</a>
-    <a href="pre-owned.html">Pre-owned</a>
-    <a href="tiendas.html">Tiendas</a>
-    <a href="historia.html">Nuestra historia</a>
-    <a href="blog.html">Blog</a>
-    <a class="btn" href="cita.html">Pedir cita</a>
+    <div class="drawer__inner">
+      <ul class="drawer__main">
+        <li style="--i:0"><a href="catalogo.html"><small>01</small>Tienda</a></li>
+        <li style="--i:1"><a href="joyas.html"><small>02</small>Joyas</a></li>
+        <li style="--i:2"><a href="relojes.html"><small>03</small>Relojes</a></li>
+        <li style="--i:3"><a href="compromiso.html"><small>04</small>Compromiso</a></li>
+        <li style="--i:4"><a href="marcas.html"><small>05</small>Marcas</a></li>
+        <li style="--i:5"><a href="pre-owned.html"><small>06</small>Pre-owned</a></li>
+        <li style="--i:6"><a href="tiendas.html"><small>07</small>Tiendas</a></li>
+      </ul>
+      <ul class="drawer__sub" style="--i:7">
+        <li><a href="historia.html">Nuestra historia</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="marcas.html#relojeria">Relojería oficial</a></li>
+      </ul>
+      <div class="drawer__foot" style="--i:8">
+        <a class="btn btn--full" href="cita.html">Pedir cita <span class="arrow"></span></a>
+        <p><a href="tel:+34935193303">935 193 303</a><a href="https://wa.me/34972364222" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:hola@joieriagrau.com">hola@joieriagrau.com</a></p>
+      </div>
+    </div>
   </nav>
 
   <main id="contenido" tabindex="-1">
 
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="wrap hero__grid">
-        <div class="hero__content">
-          <p class="eyebrow hero__in" style="--d:.05s">Joyería y Relojería Grau</p>
-          <h1 class="display hero__title" id="hero-title">
-            <span class="hero__line"><span style="--d:.15s">Alta joyería</span></span>
-            <span class="hero__line"><span style="--d:.27s">en Barcelona</span></span>
-            <span class="hero__line"><span style="--d:.39s">y Girona.</span></span>
-          </h1>
-          <p class="lead hero__in" style="--d:.6s">Distribuidores oficiales de las grandes maisons de relojería y joyería, con el asesoramiento cercano de siempre en cada una de nuestras boutiques.</p>
-          <div class="hero__actions hero__in" style="--d:.72s">
-            <a class="btn" href="joyas.html">Descubrir colecciones <span class="arrow"></span></a>
-            <a class="btn btn--ghost" href="cita.html">Pedir cita</a>
+    <div class="chapters" data-chapters>
+      <section class="chapter chapter--main" id="portada" data-chapter data-header="dark" data-header-mobile="light" aria-labelledby="hero-title">
+        <div class="chapter__text">
+          <div class="chapter__inner">
+            <p class="eyebrow hero__in" style="--d:.05s">Joyería y Relojería Grau</p>
+            <h1 class="display hero__title" id="hero-title">
+              <span class="hero__line"><span style="--d:.15s">Alta joyería</span></span>
+              <span class="hero__line"><span style="--d:.27s">en Barcelona</span></span>
+              <span class="hero__line"><span style="--d:.39s">y Girona.</span></span>
+            </h1>
+            <p class="lead hero__in" style="--d:.6s">Distribuidores oficiales de las grandes maisons de relojería y joyería, con el asesoramiento cercano de siempre en cada una de nuestras boutiques.</p>
+            <div class="hero__actions hero__in" style="--d:.72s">
+              <a class="btn" href="joyas.html">Descubrir colecciones <span class="arrow"></span></a>
+              <a class="btn btn--ghost" href="cita.html">Pedir cita</a>
+            </div>
+            <ul class="hero__facts hero__in" style="--d:.86s">
+              <li><b>1947</b><span>Joyeros desde</span></li>
+              <li><b>Rolex</b><span>Distribuidor oficial</span></li>
+              <li><b>4</b><span>Boutiques</span></li>
+            </ul>
           </div>
-          <ul class="hero__facts hero__in" style="--d:.86s">
-            <li><b>1947</b><span>Joyeros desde</span></li>
-            <li><b>Rolex</b><span>Distribuidor oficial</span></li>
-            <li><b>4</b><span>Boutiques</span></li>
-          </ul>
         </div>
 
-        <div class="hero__visual">
+        <div class="chapter__visual">
           <figure class="hero__frame" data-hero-slides aria-roledescription="carrusel" aria-label="Selección Grau">
-            <img class="hero__slide is-active" src="assets/img/hero-1.jpg" srcset="assets/img/hero-1-640.jpg 640w, assets/img/hero-1.jpg 1200w" sizes="(max-width: 900px) 100vw, 45vw" alt="Anillos de oro con nácar y diamantes" width="1200" height="1500" fetchpriority="high">
-            <img class="hero__slide" src="assets/img/hero-2.jpg" srcset="assets/img/hero-2-640.jpg 640w, assets/img/hero-2.jpg 1200w" sizes="(max-width: 900px) 100vw, 45vw" alt="Anillo solitario de diamantes en la mano" width="1200" height="1500" loading="lazy" decoding="async">
-            <img class="hero__slide" src="assets/img/hero-3.jpg" srcset="assets/img/hero-3-640.jpg 640w, assets/img/hero-3.jpg 1200w" sizes="(max-width: 900px) 100vw, 45vw" alt="Estuche de regalo Grau con lazo verde" width="1200" height="1500" loading="lazy" decoding="async">
+            <img class="hero__slide is-active" src="assets/img/hero-1.jpg" srcset="assets/img/hero-1-640.jpg 640w, assets/img/hero-1.jpg 1200w" sizes="(max-width: 900px) 100vw, 50vw" alt="Anillos de oro con nácar y diamantes" width="1200" height="1500" fetchpriority="high">
+            <img class="hero__slide" src="assets/img/hero-2.jpg" srcset="assets/img/hero-2-640.jpg 640w, assets/img/hero-2.jpg 1200w" sizes="(max-width: 900px) 100vw, 50vw" alt="Anillo solitario de diamantes en la mano" width="1200" height="1500" loading="lazy" decoding="async">
+            <img class="hero__slide" src="assets/img/hero-3.jpg" srcset="assets/img/hero-3-640.jpg 640w, assets/img/hero-3.jpg 1200w" sizes="(max-width: 900px) 100vw, 50vw" alt="Estuche de regalo Grau con lazo verde" width="1200" height="1500" loading="lazy" decoding="async">
             <figcaption class="hero__caption">
               <span class="hero__count"><b data-hero-index>01</b> / 03</span>
               <a class="hero__label" data-hero-label href="joyas.html#halo">Anillos con nácar</a>
@@ -121,8 +252,74 @@
             </a>
           </div>
         </div>
+        <a class="hero__scroll" href="#capitulo-rolex" data-chapter-link="1"><span class="hero__scroll-line" aria-hidden="true"></span>Descubrir</a>
+      </section>
+
+    <section class="chapter chapter--full chapter--dark" id="capitulo-rolex" data-chapter data-header="light" aria-labelledby="capitulo-rolex-titulo">
+      <div class="chapter__media">
+        <picture>
+          <source media="(max-width: 900px)" srcset="assets/img/rolex-m-640.jpg 640w, assets/img/rolex-m.jpg 1071w" sizes="100vw" width="1071" height="1300">
+          <img src="assets/img/rolex.jpg" srcset="assets/img/rolex-640.jpg 640w, assets/img/rolex-1280.jpg 1280w, assets/img/rolex.jpg 1880w" sizes="100vw" alt="Reloj Rolex Oyster Perpetual Datejust sobre el agua" width="1880" height="1000" loading="lazy" decoding="async">
+        </picture>
       </div>
-      <a class="hero__scroll" href="#marcas" aria-label="Ir a la siguiente sección"><span></span></a>
+      <div class="wrap chapter__body">
+        <p class="eyebrow eyebrow--plain">Distribuidor oficial Rolex</p>
+        <h2 class="chapter__title" id="capitulo-rolex-titulo" data-split>Rolex</h2>
+        <p class="chapter__lead">Distribuidor oficial Rolex desde los años 80 y servicio técnico oficial en Barcelona y Lloret de Mar.</p>
+        <div class="chapter__actions"><a class="btn btn--light" href="rolex.html">Descubrir Rolex <span class="arrow"></span></a><a class="link-line" href="cita.html?servicio=relojes">Pedir cita</a></div>
+      </div>
+    </section>
+
+    <section class="chapter chapter--full chapter--dark chapter--top-m" id="capitulo-cartier" data-chapter data-header="light" aria-labelledby="capitulo-cartier-titulo">
+      <div class="chapter__media">
+        <picture>
+          <source media="(max-width: 900px)" srcset="assets/img/cartier-m-640.jpg 640w, assets/img/cartier-m.jpg 1200w" sizes="100vw" width="1200" height="1350">
+          <img src="assets/img/cartier-wide.jpg" srcset="assets/img/cartier-wide-640.jpg 640w, assets/img/cartier-wide-1280.jpg 1280w, assets/img/cartier-wide.jpg 2000w" sizes="100vw" alt="Reloj Santos de Cartier y una pantera sobre un biplano" width="2000" height="1090" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <div class="wrap chapter__body">
+        <p class="eyebrow eyebrow--plain">Distribuidor oficial Cartier</p>
+        <h2 class="chapter__title" id="capitulo-cartier-titulo" data-split>Cartier</h2>
+        <p class="chapter__lead">Relojes y joyas de la Maison Cartier, con la garantía y el asesoramiento de un distribuidor oficial.</p>
+        <div class="chapter__actions"><a class="btn btn--light" href="cartier.html">Descubrir Cartier <span class="arrow"></span></a><a class="link-line" href="cita.html?servicio=relojes">Pedir cita</a></div>
+      </div>
+    </section>
+
+    <section class="chapter chapter--full chapter--light chapter--top-m" id="capitulo-compromiso" data-chapter data-header="dark" aria-labelledby="capitulo-compromiso-titulo">
+      <div class="chapter__media">
+        <picture>
+          <source media="(max-width: 900px)" srcset="assets/img/comp-alianzas-640.jpg 640w, assets/img/comp-alianzas.jpg 1080w" sizes="100vw" width="1080" height="1350">
+          <img src="assets/img/alianzas.jpg" srcset="assets/img/alianzas-640.jpg 640w, assets/img/alianzas-1280.jpg 1280w, assets/img/alianzas.jpg 2000w" sizes="100vw" alt="Alianzas de boda de oro Grau sobre seda" width="2000" height="1075" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <div class="wrap chapter__body">
+        <p class="eyebrow eyebrow--plain">Compromiso</p>
+        <h2 class="chapter__title" id="capitulo-compromiso-titulo" data-split>El amor está en el aire, no lo dejes escapar.</h2>
+        <p class="chapter__lead">Anillos de compromiso y alianzas creados para acompañaros toda la vida. Os asesoramos en boutique, con calma y sin prisas.</p>
+        <div class="chapter__actions"><a class="btn" href="compromiso.html#anillos">Anillos de compromiso <span class="arrow"></span></a><a class="link-line" href="compromiso.html#alianzas">Alianzas de boda</a></div>
+      </div>
+    </section>
+      <div class="chapters__rail">
+        <nav class="chapters__nav" aria-label="Capítulos de la portada" data-chapters-nav>
+          <a href="#portada" data-chapter-link="0" aria-current="true"><span class="chapters__label">Grau</span><i aria-hidden="true"></i></a>
+          <a href="#capitulo-rolex" data-chapter-link="1"><span class="chapters__label">Rolex</span><i aria-hidden="true"></i></a>
+          <a href="#capitulo-cartier" data-chapter-link="2"><span class="chapters__label">Cartier</span><i aria-hidden="true"></i></a>
+          <a href="#capitulo-compromiso" data-chapter-link="3"><span class="chapters__label">Compromiso</span><i aria-hidden="true"></i></a>
+        </nav>
+      </div>
+    </div>
+
+    <section class="section manifesto" aria-labelledby="manifiesto-title">
+      <div class="wrap manifesto__wrap">
+        <p class="eyebrow eyebrow--center reveal">Desde 1947</p>
+        <h2 class="manifesto__text" id="manifiesto-title" data-split>Ofrecemos mucho más que una joya o un reloj: una pieza única y eterna, con el trato humano, honesto y cercano que nos define.</h2>
+        <ul class="manifesto__facts">
+          <li class="reveal"><b>Distribuidor oficial</b><span>Rolex, Tudor y Cartier</span></li>
+          <li class="reveal" data-delay="1"><b>Servicio técnico oficial</b><span>Barcelona y Lloret de Mar</span></li>
+          <li class="reveal" data-delay="2"><b>Taller propio</b><span>Joyas hechas a mano</span></li>
+        </ul>
+        <a class="link-line reveal" href="historia.html">Nuestra historia</a>
+      </div>
     </section>
 
     <section class="marquee" id="marcas" aria-label="Marcas disponibles en Grau">
@@ -137,7 +334,7 @@
         <div class="section__head">
           <div class="reveal">
             <p class="eyebrow">Encuentra tu joya</p>
-            <h2 class="h2">Piezas para cada momento</h2>
+            <h2 class="h2" data-split>Piezas para cada momento</h2>
           </div>
           <a class="link-line reveal" href="joyas.html">Ver todas las joyas</a>
         </div>
@@ -152,46 +349,91 @@
       </div>
     </section>
 
-    <section class="section section--paper" id="relojeria">
-      <div class="wrap">
-        <div class="section__head">
+    <section class="hscroll" data-hscroll aria-labelledby="colecciones-title">
+      <div class="hscroll__sticky">
+        <div class="hscroll__track" data-hscroll-track>
+          <div class="hscroll__intro">
+            <p class="eyebrow">Diseñadas en Grau</p>
+            <h2 class="h2" id="colecciones-title" data-split>Nuestras colecciones</h2>
+            <p>Joyas creadas en nuestro taller, con la misma esencia desde 1947.</p>
+            <p class="hscroll__hint" aria-hidden="true"><span></span>Descubre las colecciones</p>
+          </div>
+          <div class="hscroll__cards" data-hscroll-cards>
+            <a class="coll reveal" href="catalogo.html?seccion=joyas&amp;coleccion=aura">
+              <span class="coll__img"><img src="assets/img/joyas-hero.jpg" srcset="assets/img/joyas-hero-640.jpg 640w, assets/img/joyas-hero.jpg 1200w" sizes="(max-width: 900px) 78vw, 30vw" alt="Anillo de oro amarillo con diamantes de la colección Aura" width="1200" height="1500" loading="lazy" decoding="async"></span>
+              <span class="coll__top"><span class="coll__num">01</span><span class="coll__meta">Colección insignia · desde 1994</span></span>
+              <h3 class="coll__name">Aura</h3>
+              <span class="coll__text">Lleva un pedacito de cosmos contigo: oro y diamantes que perduran con la misma esencia.</span>
+            </a>
+            <a class="coll reveal" href="catalogo.html?seccion=joyas&amp;coleccion=halo">
+              <span class="coll__img"><img src="assets/img/hero-1.jpg" srcset="assets/img/hero-1-640.jpg 640w, assets/img/hero-1.jpg 1200w" sizes="(max-width: 900px) 78vw, 30vw" alt="Anillos de oro con nácar y diamantes de la colección Halo" width="1200" height="1500" loading="lazy" decoding="async"></span>
+              <span class="coll__top"><span class="coll__num">02</span><span class="coll__meta">Colección Grau</span></span>
+              <h3 class="coll__name">Halo</h3>
+              <span class="coll__text">Un halo de diamantes inspirado en los ángeles, con nácar, ónix y oro.</span>
+            </a>
+            <a class="coll reveal" href="catalogo.html?seccion=joyas&amp;coleccion=good-mood">
+              <span class="coll__img"><img src="assets/img/pendientes.jpg" srcset="assets/img/pendientes-640.jpg 640w, assets/img/pendientes.jpg 960w" sizes="(max-width: 900px) 78vw, 30vw" alt="Pendientes de oro con gema de la colección Good Mood" width="960" height="1280" loading="lazy" decoding="async"></span>
+              <span class="coll__top"><span class="coll__num">03</span><span class="coll__meta">Colección Grau</span></span>
+              <h3 class="coll__name">Good Mood</h3>
+              <span class="coll__text">Grandes gemas preciosas: ese toque de color que te pone de buen humor.</span>
+            </a>
+            <a class="coll reveal" href="catalogo.html?seccion=joyas&amp;coleccion=my-essence">
+              <span class="coll__img"><img src="assets/img/oro-pepitas.jpg" srcset="assets/img/oro-pepitas-640.jpg 640w, assets/img/oro-pepitas.jpg 1024w" sizes="(max-width: 900px) 78vw, 30vw" alt="Pepitas de oro de la colección My Essence" width="1024" height="1024" loading="lazy" decoding="async"></span>
+              <span class="coll__top"><span class="coll__num">04</span><span class="coll__meta">Colección Grau</span></span>
+              <h3 class="coll__name">My Essence</h3>
+              <span class="coll__text">Joyas de oro para mujer y hombre con las que lucir tu esencia, cada día.</span>
+            </a>
+            <a class="coll coll--end reveal" href="joyas.html#colecciones"><span class="coll__end"><span class="eyebrow eyebrow--plain">Joyería Grau</span><span class="coll__end-title">Descubrir todas las colecciones</span><span class="arrow" aria-hidden="true"></span></span></a>
+          </div>
+        </div>
+        <div class="hscroll__bar" aria-hidden="true"><span data-hscroll-bar></span></div>
+      </div>
+    </section>
+
+    <section class="section watches" aria-labelledby="relojeria-title">
+      <div class="wrap watches__grid">
+        <figure class="watches__media reveal-media" data-swap-media>
+          <img src="assets/img/rolex-m.jpg" srcset="assets/img/rolex-m-640.jpg 640w, assets/img/rolex-m.jpg 1071w" sizes="(max-width: 900px) 100vw, 46vw" alt="Reloj Rolex Oyster Perpetual Datejust" width="1071" height="1300" loading="lazy" decoding="async" data-swap="0" class="is-active">
+          <img src="assets/img/tudor.jpg" alt="Reloj TUDOR Black Bay con esfera turquesa" width="800" height="1080" loading="lazy" decoding="async" data-swap="1">
+          <img src="assets/img/cartier-m.jpg" srcset="assets/img/cartier-m-640.jpg 640w, assets/img/cartier-m.jpg 1200w" sizes="(max-width: 900px) 100vw, 46vw" alt="Reloj Santos de Cartier" width="1200" height="1350" loading="lazy" decoding="async" data-swap="2">
+          <img src="assets/img/preowned-hero.jpg" srcset="assets/img/preowned-hero-640.jpg 640w, assets/img/preowned-hero-1280.jpg 1280w, assets/img/preowned-hero.jpg 1600w" sizes="(max-width: 900px) 100vw, 46vw" alt="Reloj pre-owned con tarjeta de certificado Grau" width="1600" height="1067" loading="lazy" decoding="async" data-swap="3">
+          <img src="assets/img/relojes.jpg" srcset="assets/img/relojes-640.jpg 640w, assets/img/relojes.jpg 960w" sizes="(max-width: 900px) 100vw, 46vw" alt="Reloj de caballero con gemelos" width="960" height="1280" loading="lazy" decoding="async" data-swap="4">
+          <figcaption class="watches__caption"><span data-swap-caption>Rolex · Distribuidor oficial</span></figcaption>
+        </figure>
+        <div class="watches__body">
           <div class="reveal">
             <p class="eyebrow">Relojería</p>
-            <h2 class="h2">Distribuidores oficiales</h2>
+            <h2 class="h2" id="relojeria-title" data-split>Las grandes firmas de la relojería</h2>
+            <p class="watches__lead">Distribuidor oficial Rolex, Tudor y Cartier, con servicio técnico oficial en Barcelona y Lloret de Mar y una selección de las firmas suizas más prestigiosas.</p>
           </div>
-          <a class="link-line reveal" href="relojes.html">Ver toda la relojería</a>
-        </div>
-        <div class="duo">
-          <a class="feature feature--rolex reveal" href="rolex.html">
-            <picture><source media="(max-width: 900px)" srcset="assets/img/rolex-m-640.jpg 640w, assets/img/rolex-m.jpg 1071w" sizes="100vw" width="1071" height="1300"><img src="assets/img/rolex.jpg" srcset="assets/img/rolex-640.jpg 640w, assets/img/rolex-1280.jpg 1280w, assets/img/rolex.jpg 1880w" sizes="58vw" alt="Reloj Rolex Oyster Perpetual Datejust" width="1880" height="1000" loading="lazy" decoding="async"></picture>
-            <div class="feature__body">
-              <p class="eyebrow eyebrow--plain">Distribuidor oficial</p>
-              <h3 class="h3">Rolex</h3>
-              <span class="link-line">Descubrir</span>
-            </div>
-          </a>
-          <a class="feature feature--cartier reveal" data-delay="1" href="cartier.html">
-            <picture><source media="(max-width: 560px)" srcset="assets/img/cartier-m-640.jpg 640w, assets/img/cartier-m.jpg 1200w" sizes="100vw" width="1200" height="1350"><img src="assets/img/cartier.jpg" srcset="assets/img/cartier-640.jpg 640w, assets/img/cartier-1280.jpg 1280w, assets/img/cartier.jpg 2000w" sizes="(max-width: 900px) 100vw, 42vw" alt="Reloj Santos de Cartier" width="2000" height="1600" loading="lazy" decoding="async"></picture>
-            <div class="feature__body">
-              <p class="eyebrow eyebrow--plain">Maison Cartier</p>
-              <h3 class="h3">Santos de Cartier</h3>
-              <span class="link-line">Descubrir Cartier</span>
-            </div>
-          </a>
+          <ul class="watch-list" data-swap-list>
+            <li class="reveal"><a href="rolex.html" data-swap-to="0" data-caption="Rolex · Distribuidor oficial"><span class="watch-list__num">01</span><span class="watch-list__name">Rolex</span><span class="watch-list__meta">Distribuidor oficial</span></a></li>
+            <li class="reveal" data-delay="1"><a href="tudor.html" data-swap-to="1" data-caption="Tudor · Distribuidor oficial"><span class="watch-list__num">02</span><span class="watch-list__name">Tudor</span><span class="watch-list__meta">Distribuidor oficial</span></a></li>
+            <li class="reveal" data-delay="2"><a href="cartier.html" data-swap-to="2" data-caption="Cartier · Distribuidor oficial"><span class="watch-list__num">03</span><span class="watch-list__name">Cartier</span><span class="watch-list__meta">Distribuidor oficial</span></a></li>
+            <li class="reveal" data-delay="3"><a href="pre-owned.html" data-swap-to="3" data-caption="Grau Pre-owned · Relojes certificados"><span class="watch-list__num">04</span><span class="watch-list__name">Grau Pre-owned</span><span class="watch-list__meta">Relojes certificados</span></a></li>
+            <li class="reveal" data-delay="3"><a href="relojes.html" data-swap-to="4" data-caption="Toda la relojería · Todas las firmas"><span class="watch-list__num">05</span><span class="watch-list__name">Toda la relojería</span><span class="watch-list__meta">Todas las firmas</span></a></li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section class="promise">
-      <img src="assets/img/alianzas.jpg" srcset="assets/img/alianzas-640.jpg 640w, assets/img/alianzas-1280.jpg 1280w, assets/img/alianzas.jpg 2000w" sizes="(max-width: 900px) 100vw, 60vw" alt="Alianzas de boda de oro Grau" width="2000" height="1075" loading="lazy" decoding="async" data-parallax>
-      <div class="wrap">
-        <div class="promise__body">
-          <p class="eyebrow reveal">Compromiso</p>
-          <h2 class="h2 reveal" data-delay="1">El amor está en el aire, no lo dejes escapar.</h2>
-          <p class="lead reveal" data-delay="2">Anillos de compromiso y alianzas creados para acompañaros toda la vida. Os asesoramos en boutique, con calma y sin prisas.</p>
-          <div class="promise__links reveal" data-delay="3">
-            <a class="btn" href="compromiso.html#anillos">Anillos de compromiso <span class="arrow"></span></a>
-            <a class="link-line" href="compromiso.html#alianzas">Alianzas de boda</a>
+    <section class="section atelier" aria-labelledby="taller-title">
+      <div class="wrap atelier__grid">
+        <figure class="atelier__media reveal-media"><img src="assets/img/comp-taller.jpg" srcset="assets/img/comp-taller-640.jpg 640w, assets/img/comp-taller.jpg 1080w" sizes="(max-width: 900px) 100vw, 45vw" alt="Joyero de Grau engastando un diamante en el taller" width="1080" height="1350" loading="lazy" decoding="async" data-parallax></figure>
+        <div class="atelier__body">
+          <div class="reveal">
+            <p class="eyebrow">Nuestro taller</p>
+            <h2 class="h2" id="taller-title" data-split>Hechas a mano en nuestro taller</h2>
+            <p class="lead">En nuestro taller propio trabajamos de forma artesanal, ética y sostenible, fusionando lo mejor de la tradición y de la innovación. Cuéntanos tu idea y la convertiremos en una joya única.</p>
+          </div>
+          <ol class="atelier__list">
+            <li class="reveal"><b>Oro de 18 k y platino</b><span>Aleaciones propias, fundidas, forjadas y pulidas a mano.</span></li>
+            <li class="reveal" data-delay="1"><b>Diamantes éticos</b><span>Adquiridos en origen, desde la calidad G-VS2.</span></li>
+            <li class="reveal" data-delay="2"><b>Servicio técnico oficial</b><span>Nuestros relojeros cuidan tu Rolex en Barcelona y Lloret de Mar.</span></li>
+          </ol>
+          <div class="split__actions reveal">
+            <a class="btn btn--light" href="cita.html?servicio=personalizadas">Diseñar mi joya <span class="arrow"></span></a>
+            <a class="link-line" href="historia.html">Nuestra historia</a>
           </div>
         </div>
       </div>
@@ -202,7 +444,7 @@
         <div class="section__head">
           <div class="reveal">
             <p class="eyebrow">El blog de Grau</p>
-            <h2 class="h2">Historias que brillan</h2>
+            <h2 class="h2" data-split>Historias que brillan</h2>
           </div>
           <a class="link-line reveal" href="blog.html">Ir al blog</a>
         </div>
@@ -236,7 +478,7 @@
       <div class="wrap nl-band__grid">
         <div class="reveal">
           <p class="eyebrow">La Carta de Grau</p>
-          <h2 class="h2">Lo nuevo, antes que nadie.</h2>
+          <h2 class="h2" data-split>Lo nuevo, antes que nadie.</h2>
           <p>Nuevas colecciones, presentaciones en boutique y consejos de nuestros joyeros, directamente en tu correo.</p>
         </div>
         <div class="nl-box reveal" data-delay="1">
@@ -271,10 +513,10 @@
 
     <section class="section section--sand" id="tiendas">
       <div class="wrap stores">
-        <div class="stores__img reveal"><img src="assets/img/tienda-m.jpg" srcset="assets/img/tienda-m-640.jpg 640w, assets/img/tienda-m.jpg 1004w" sizes="(max-width: 900px) 100vw, 50vw" alt="Boutique Grau en Barcelona" width="1004" height="1004" loading="lazy" decoding="async"></div>
+        <div class="stores__img reveal-media"><img src="assets/img/tienda-m.jpg" srcset="assets/img/tienda-m-640.jpg 640w, assets/img/tienda-m.jpg 1004w" sizes="(max-width: 900px) 100vw, 50vw" alt="Boutique Grau en Barcelona" width="1004" height="1004" loading="lazy" decoding="async" data-parallax></div>
         <div>
           <p class="eyebrow reveal">Nuestras joyerías</p>
-          <h2 class="h2 reveal" data-delay="1">Visítanos en boutique</h2>
+          <h2 class="h2" data-split>Visítanos en boutique</h2>
           <p class="lead reveal" data-delay="2">Visita tu joyería preferida y recibe asesoramiento personalizado.</p>
           <a class="link-line reveal" data-delay="2" href="tiendas.html">Direcciones y horarios</a>
           <ul class="store-list">

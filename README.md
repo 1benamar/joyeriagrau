@@ -34,7 +34,10 @@ Sirve la web en http://localhost:8765 para revisarla (sin PHP: los formularios m
 
 ## Dónde se cambia cada cosa
 
-- Teléfono, email, redes, tiendas, horarios y menú: `tools/sitio/lib/config.js`.
+- Teléfono, email, redes, tiendas, horarios, menú y menús desplegables: `tools/sitio/lib/config.js`.
+- Portada (capítulos a pantalla completa, colecciones, relojería y taller): `tools/sitio/paginas/inicio.js`.
+- Animaciones e interacciones (capítulos, menú desplegable, colecciones en horizontal, cursor, desplazamiento suave): `main.js`.
+  Todas respetan la preferencia de movimiento reducido del sistema.
 - Cabecera, pie y bloques comunes: `tools/sitio/lib/plantilla.js` y `tools/sitio/lib/bloques.js`.
 - Textos de cada página: `tools/sitio/paginas/`.
 - Artículos del blog y páginas legales: `tools/sitio/contenido/`.

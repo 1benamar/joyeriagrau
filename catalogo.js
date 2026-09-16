@@ -53,12 +53,12 @@
     return catalogPromise;
   }
 
-  function cardHTML(p, brands) {
+  function cardHTML(p, brands, n) {
     var brand = brands[p[I.brand]] || "";
     var badge = p[I.sec] === "preowned" ? "Pre-owned" : (p[I.regular] > p[I.price] ? "Oferta" : "");
     var alt = p[I.img2] ? '<img class="pcard__alt" src="' + IMG(p[I.img2], p[I.slug]) + '" alt="" loading="lazy" decoding="async">' : "";
     var img = p[I.img] ? '<img src="' + IMG(p[I.img], p[I.slug]) + '" alt="' + esc(p[I.name]) + '" loading="lazy" decoding="async" width="600" height="600">' : '<span class="pcard__noimg">Grau</span>';
-    return '<a class="pcard" href="producto.html?id=' + p[I.id] + '">' +
+    return '<a class="pcard" style="--n:' + ((n || 0) % 12) + '" href="producto.html?id=' + p[I.id] + '">' +
       '<div class="pcard__img">' + img + alt + (badge ? '<span class="pcard__badge">' + badge + "</span>" : "") + "</div>" +
       '<div class="pcard__body">' + (brand ? '<span class="pcard__brand">' + esc(brand) + "</span>" : "") +
       '<h3 class="pcard__name">' + esc(p[I.name]) + "</h3>" +
@@ -249,7 +249,7 @@
 
     function renderMore() {
       var next = results.slice(shown, shown + PAGE);
-      grid.insertAdjacentHTML("beforeend", next.map(function (p) { return cardHTML(p, brands); }).join(""));
+      grid.insertAdjacentHTML("beforeend", next.map(function (p, n) { return cardHTML(p, brands, n); }).join(""));
       var firstNew = grid.children[shown];
       shown += next.length;
       moreBtn.hidden = shown >= results.length;
@@ -446,7 +446,16 @@
       root.addEventListener("click", function (e) {
         var thumb = e.target.closest(".pdp__thumb");
         if (!thumb || !main) return;
-        main.src = thumb.getAttribute("data-large");
+        var large = thumb.getAttribute("data-large");
+        if (main.getAttribute("src") !== large) {
+          // Fundido suave entre imágenes de la galería
+          main.classList.add("is-changing");
+          setTimeout(function () {
+            main.onload = main.onerror = function () { main.classList.remove("is-changing"); };
+            main.src = large;
+            if (main.complete) main.classList.remove("is-changing");
+          }, 200);
+        }
         [].forEach.call(root.querySelectorAll(".pdp__thumb"), function (b) { b.setAttribute("aria-pressed", String(b === thumb)); });
       });
 
@@ -467,7 +476,7 @@
       var relEl = document.querySelector("[data-related]");
       if (relEl && related.length) {
         relEl.hidden = false;
-        relEl.querySelector("[data-related-grid]").innerHTML = related.map(function (it) { return cardHTML(it, p.relatedBrands || {}); }).join("");
+        relEl.querySelector("[data-related-grid]").innerHTML = related.map(function (it, n) { return cardHTML(it, p.relatedBrands || {}, n); }).join("");
         var more = relEl.querySelector("[data-related-more]");
         if (more && p.brand && brandName) { more.href = "catalogo.html?marca=" + encodeURIComponent(p.brand); more.textContent = "Ver todo " + brandName; }
         else if (more && sec) more.href = "catalogo.html?seccion=" + sec;
@@ -495,7 +504,7 @@
       var key = grid.getAttribute("data-brand-grid");
       fetch(BRAND_URL(key)).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (data) {
         grid.innerHTML = data.items.length
-          ? data.items.map(function (p) { return cardHTML(p, data.brands); }).join("")
+          ? data.items.map(function (p, n) { return cardHTML(p, data.brands, n); }).join("")
           : '<p class="catalog__empty">Consulta los modelos disponibles en boutique.</p>';
       }).catch(function () {
         grid.innerHTML = '<p class="catalog__empty">No se ha podido cargar la selección. <a class="link-line" href="catalogo.html?marca=' + esc(key) + '">Ver en la tienda</a></p>';

@@ -4,6 +4,7 @@
 
   var doc = document.documentElement;
   doc.classList.remove("no-js");
+  doc.classList.add("js");
 
   // Rutas relativas a la carpeta de este script (funciona también en blog/ y en la página 404)
   var script = document.currentScript || document.querySelector('script[src*="main.js"]');
@@ -17,25 +18,104 @@
     try { fn(); } catch (e) { if (window.console) console.error("[grau] " + name, e); }
   }
 
-  /* Cabecera: sombra al hacer scroll */
+  function clamp(v, min, max) { return v < min ? min : v > max ? max : v; }
+  function media(query) { return window.matchMedia ? window.matchMedia(query) : { matches: false, addEventListener: function () {} }; }
+  function onMediaChange(mq, fn) { if (mq.addEventListener) mq.addEventListener("change", fn); else if (mq.addListener) mq.addListener(fn); }
+
+  /* Ejecuta fn como mucho una vez por fotograma mientras se hace scroll */
+  function onScrollFrame(fn) {
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () { ticking = false; fn(); });
+    }, { passive: true });
+  }
+
+  /* Cabecera: fondo al hacer scroll (en la portada lo gestionan los capítulos) */
   function initHeader() {
     var header = document.querySelector(".header");
-    if (!header) return;
+    if (!header || document.querySelector("[data-chapters]")) return;
     var onScroll = function () { header.classList.toggle("is-solid", window.scrollY > 24); };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  /* Menú desplegable de escritorio: se abre al pasar el ratón o con su botón, y se cierra con Escape */
+  function initMegaMenu() {
+    var header = document.querySelector(".header");
+    var items = [].slice.call(document.querySelectorAll("[data-mega]"));
+    var backdrop = document.querySelector("[data-nav-backdrop]");
+    if (!header || !items.length) return;
+    var desktop = media("(min-width: 901px)");
+    var current = null, openTimer = null, closeTimer = null, hideTimer = null;
+
+    function mark(item, open) {
+      item.classList.toggle("is-open", open);
+      var button = item.querySelector(".nav__more");
+      if (button) button.setAttribute("aria-expanded", String(open));
+    }
+    function open(item) {
+      clearTimeout(closeTimer);
+      clearTimeout(hideTimer);
+      if (current === item) return;
+      if (current) mark(current, false);
+      current = item;
+      mark(item, true);
+      header.classList.add("is-menu");
+      if (backdrop) {
+        backdrop.hidden = false;
+        requestAnimationFrame(function () { backdrop.classList.add("is-visible"); });
+      }
+    }
+    function close(focusItem) {
+      clearTimeout(openTimer);
+      if (!current) return;
+      var item = current;
+      current = null;
+      mark(item, false);
+      header.classList.remove("is-menu");
+      if (backdrop) {
+        backdrop.classList.remove("is-visible");
+        hideTimer = setTimeout(function () { if (!current) backdrop.hidden = true; }, 450);
+      }
+      if (focusItem) item.querySelector("a").focus();
+    }
+
+    items.forEach(function (item) {
+      var button = item.querySelector(".nav__more");
+      item.addEventListener("mouseenter", function () {
+        if (!desktop.matches) return;
+        clearTimeout(closeTimer);
+        clearTimeout(openTimer);
+        openTimer = setTimeout(function () { open(item); }, current ? 0 : 120);
+      });
+      item.addEventListener("mouseleave", function () {
+        clearTimeout(openTimer);
+        closeTimer = setTimeout(function () { close(false); }, 200);
+      });
+      if (button) button.addEventListener("click", function () { if (current === item) close(false); else open(item); });
+      item.addEventListener("focusout", function (e) {
+        if (current === item && !item.contains(e.relatedTarget)) close(false);
+      });
+    });
+    if (backdrop) backdrop.addEventListener("click", function () { close(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && current) close(true); });
+    onMediaChange(desktop, function () { if (!desktop.matches) close(false); });
   }
 
   /* Menú móvil */
   function initDrawer() {
     var burger = document.querySelector(".burger");
     var drawer = document.querySelector(".drawer");
+    var header = document.querySelector(".header");
     if (!burger || !drawer) return;
     var isOpen = function () { return burger.getAttribute("aria-expanded") === "true"; };
     function set(open, restoreFocus) {
       burger.setAttribute("aria-expanded", String(open));
       burger.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
       drawer.classList.toggle("is-open", open);
+      if (header) header.classList.toggle("is-menu", open);
       document.body.style.overflow = open ? "hidden" : "";
       if (open) { var first = drawer.querySelector("a"); if (first) setTimeout(function () { first.focus(); }, 50); }
       else if (restoreFocus) burger.focus();
@@ -47,9 +127,40 @@
     window.addEventListener("resize", function () { if (isOpen() && window.innerWidth > 900) set(false, false); });
   }
 
+  /* Titulares palabra a palabra: cada palabra se envuelve para animarla sin cambiar el texto */
+  function initSplit() {
+    [].forEach.call(document.querySelectorAll("[data-split]"), function (el) {
+      if (!reducedMotion) {
+        var n = 0;
+        (function walk(node) {
+          [].slice.call(node.childNodes).forEach(function (child) {
+            if (child.nodeType === 1) { if (child.tagName !== "BR") walk(child); return; }
+            if (child.nodeType !== 3) return;
+            var frag = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(" ")); return; }
+              var word = document.createElement("span");
+              var inner = document.createElement("span");
+              word.className = "w";
+              inner.textContent = part;
+              inner.style.setProperty("--i", n++);
+              word.appendChild(inner);
+              frag.appendChild(word);
+            });
+            node.replaceChild(frag, child);
+          });
+        })(el);
+      } else {
+        el.classList.add("is-in");
+      }
+      el.classList.add("is-split");
+    });
+  }
+
   /* Aparición suave al entrar en pantalla */
   function initReveal() {
-    var els = [].slice.call(document.querySelectorAll(".reveal"));
+    var els = [].slice.call(document.querySelectorAll(".reveal, .reveal-media, [data-split]"));
     if (!els.length) return;
     var showAll = function () { els.forEach(function (el) { el.classList.add("is-in"); }); };
     if (reducedMotion || !("IntersectionObserver" in window)) return showAll();
@@ -78,11 +189,21 @@
     frame.style.setProperty("--hero-interval", INTERVAL / 1000 + "s");
 
     function go(n) {
+      n = (n + slides.length) % slides.length;
       if (n === current) return;
+      // La imagen de destino vuelve a su posición oculta sin transición para subir en cortina
+      var next = slides[n];
+      next.style.transition = "none";
+      next.classList.remove("was-active");
+      void next.offsetWidth;
+      next.style.transition = "";
+      // La imagen saliente queda debajo mientras la nueva sube
+      slides.forEach(function (s) { s.classList.remove("was-active"); });
+      slides[current].classList.add("was-active");
       slides[current].classList.remove("is-active");
       dots[current].classList.remove("is-active");
       dots[current].setAttribute("aria-pressed", "false");
-      current = (n + slides.length) % slides.length;
+      current = n;
       slides[current].classList.add("is-active");
       dots[current].classList.add("is-active");
       dots[current].setAttribute("aria-pressed", "true");
@@ -157,25 +278,282 @@
     schedule();
   }
 
-  /* Parallax sutil en imágenes marcadas con data-parallax (solo escritorio) */
+  /* Parallax sutil: la imagen se desplaza dentro de su marco (data-parallax) */
   function initParallax() {
     var items = [].slice.call(document.querySelectorAll("[data-parallax]"));
     if (!items.length || reducedMotion) return;
-    var ticking = false;
     function update() {
       var vh = window.innerHeight;
       items.forEach(function (img) {
-        if (window.innerWidth <= 900) { img.style.transform = ""; return; }
         var box = img.parentElement.getBoundingClientRect();
-        if (box.bottom < 0 || box.top > vh) return;
-        var progress = (box.top + box.height / 2 - vh / 2) / vh;
-        img.style.transform = "translate3d(0," + (progress * -60).toFixed(1) + "px,0)";
+        if (box.bottom < -80 || box.top > vh + 80) return;
+        var progress = clamp((box.top + box.height / 2 - vh / 2) / (vh / 2 + box.height / 2), -1, 1);
+        img.style.setProperty("--py", (progress * box.height * -0.06).toFixed(1) + "px");
       });
-      ticking = false;
     }
-    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    onScrollFrame(update);
     window.addEventListener("resize", update);
     update();
+  }
+
+  /* Portada: capítulos apilados. Marca el capítulo activo, ajusta el tono de la cabecera
+     y calcula el efecto cortina (--cover oscurece el capítulo tapado, --enter desplaza la imagen entrante). */
+  function initChapters() {
+    var root = document.querySelector("[data-chapters]");
+    if (!root) return;
+    var header = document.querySelector(".header");
+    var panels = [].slice.call(root.querySelectorAll("[data-chapter]"));
+    var navLinks = [].slice.call(root.querySelectorAll("[data-chapters-nav] a"));
+    var mobile = media("(max-width: 900px)");
+    var starts = [], top = 0, total = 0, vh = 0, active = -1;
+
+    function measure() {
+      vh = window.innerHeight;
+      top = root.getBoundingClientRect().top + window.scrollY;
+      total = root.offsetHeight;
+      var acc = 0;
+      starts = panels.map(function (panel) { var start = top + acc; acc += panel.offsetHeight; return start; });
+      update();
+    }
+
+    function update() {
+      var y = window.scrollY;
+      var headerH = header ? header.offsetHeight : 0;
+      var index = 0;
+      for (var i = 0; i < panels.length; i++) if (starts[i] <= y + headerH / 2) index = i;
+
+      if (index !== active) {
+        active = index;
+        navLinks.forEach(function (a, k) { if (k === index) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+        root.classList.toggle("is-nav-dark", panels[index].getAttribute("data-header") !== "light");
+      }
+      if (header) {
+        header.classList.toggle("is-solid", y >= top + total - headerH);
+        var panel = panels[index];
+        var tone = (mobile.matches && panel.getAttribute("data-header-mobile")) || panel.getAttribute("data-header");
+        header.classList.toggle("is-light", tone === "light");
+      }
+
+      if (reducedMotion || y > top + total || y < top - vh) return;
+      panels.forEach(function (panel, k) {
+        var cover = k < panels.length - 1 ? clamp((y - starts[k + 1] + vh) / vh, 0, 1) : 0;
+        var enter = k ? (1 - clamp((y - starts[k] + vh) / vh, 0, 1)) * -0.28 * vh : 0;
+        panel.style.setProperty("--cover", cover.toFixed(3));
+        panel.style.setProperty("--enter", enter.toFixed(1) + "px");
+      });
+    }
+
+    // Los enlaces a capítulos calculan la posición real (los capítulos fijados no sirven como ancla)
+    [].forEach.call(root.querySelectorAll("[data-chapter-link]"), function (a) {
+      a.addEventListener("click", function (e) {
+        var k = +a.getAttribute("data-chapter-link");
+        if (starts[k] === undefined) return;
+        e.preventDefault();
+        window.scrollTo({ top: starts[k] + (k ? 1 : 0), behavior: reducedMotion ? "auto" : "smooth" });
+        panels[k].setAttribute("tabindex", "-1");
+        panels[k].focus({ preventScroll: true });
+      });
+    });
+
+    // Si el foco entra en un capítulo tapado por el siguiente, se vuelve a mostrar entero
+    root.addEventListener("focusin", function (e) {
+      var panel = e.target.closest("[data-chapter]");
+      var k = panels.indexOf(panel);
+      if (k < 0 || k === panels.length - 1 || e.target === panel) return;
+      if (window.scrollY > starts[k + 1] - vh + 2) window.scrollTo({ top: starts[k], behavior: "auto" });
+    });
+
+    onScrollFrame(update);
+    window.addEventListener("resize", measure);
+    window.addEventListener("load", measure);
+    onMediaChange(mobile, measure);
+    measure();
+  }
+
+  /* Colecciones: en escritorio el scroll vertical desplaza la fila en horizontal; en móvil, deslizamiento nativo */
+  function initHScroll() {
+    [].forEach.call(document.querySelectorAll("[data-hscroll]"), function (section) {
+      var track = section.querySelector("[data-hscroll-track]");
+      var cards = section.querySelector("[data-hscroll-cards]");
+      var bar = section.querySelector("[data-hscroll-bar]");
+      if (!track || !cards) return;
+      var wide = media("(min-width: 901px)");
+      var pinned = false, distance = 0, top = 0;
+
+      function progress(p) { if (bar) bar.style.setProperty("--progress", Math.max(p, 0.06).toFixed(4)); }
+
+      function layout() {
+        var pin = wide.matches && !reducedMotion;
+        if (pin !== pinned) {
+          pinned = pin;
+          section.classList.toggle("is-pinned", pin);
+          track.style.transform = "";
+          cards.scrollLeft = 0;
+        }
+        if (pinned) {
+          distance = Math.max(0, track.offsetWidth - doc.clientWidth);
+          section.style.setProperty("--hscroll-h", Math.round(window.innerHeight + distance) + "px");
+          top = section.getBoundingClientRect().top + window.scrollY;
+        } else {
+          section.style.removeProperty("--hscroll-h");
+        }
+        update();
+      }
+
+      function update() {
+        if (pinned) {
+          var p = distance ? clamp((window.scrollY - top) / distance, 0, 1) : 0;
+          track.style.transform = "translate3d(" + (-p * distance).toFixed(1) + "px,0,0)";
+          progress(p);
+        } else {
+          var max = cards.scrollWidth - cards.clientWidth;
+          progress(max > 0 ? cards.scrollLeft / max : 1);
+        }
+      }
+
+      // Con teclado, la tarjeta enfocada se lleva a la vista
+      track.addEventListener("focusin", function (e) {
+        if (!pinned || !distance) return;
+        var card = e.target.closest(".coll, .hscroll__intro");
+        if (!card) return;
+        var x = card.getBoundingClientRect().left - track.getBoundingClientRect().left;
+        window.scrollTo({ top: top + clamp((x - 120) / distance, 0, 1) * distance, behavior: "auto" });
+      });
+
+      onScrollFrame(function () { if (pinned) update(); });
+      cards.addEventListener("scroll", function () { if (!pinned) update(); }, { passive: true });
+      window.addEventListener("resize", layout);
+      window.addEventListener("load", layout);
+      onMediaChange(wide, layout);
+      layout();
+    });
+  }
+
+  /* Desplazamiento suave con inercia para la rueda del ratón (escritorio).
+     El teclado, la barra de desplazamiento y las pantallas táctiles mantienen su comportamiento nativo. */
+  function initSmoothScroll() {
+    if (reducedMotion || !media("(hover: hover) and (pointer: fine) and (min-width: 901px)").matches) return;
+    var current = 0, target = 0, lastSet = 0, running = false, lastTime = 0;
+
+    function scrollableParent(el) {
+      for (; el && el.nodeType === 1 && el !== document.body && el !== doc; el = el.parentElement) {
+        if (el.scrollHeight > el.clientHeight + 1) {
+          var overflow = getComputedStyle(el).overflowY;
+          if (overflow === "auto" || overflow === "scroll") return el;
+        }
+      }
+      return null;
+    }
+    function stop() {
+      running = false;
+      doc.style.scrollBehavior = "";
+    }
+    function loop(time) {
+      if (!running) return;
+      // Si otra cosa ha movido la página (teclado, ancla, barra), se cede el control
+      if (Math.abs(window.scrollY - lastSet) > 4) return stop();
+      // Suavizado independiente de la frecuencia de refresco de la pantalla
+      var dt = lastTime ? Math.min(time - lastTime, 50) : 16.7;
+      lastTime = time;
+      current += (target - current) * (1 - Math.pow(0.88, dt / 16.7));
+      if (Math.abs(target - current) < 0.5) current = target;
+      lastSet = Math.round(current);
+      window.scrollTo(0, current);
+      lastSet = window.scrollY;
+      if (current === target) return stop();
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener("wheel", function (e) {
+      if (e.ctrlKey || e.defaultPrevented || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      if (document.body.style.overflow === "hidden" || scrollableParent(e.target)) return;
+      var delta = e.deltaY * (e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? window.innerHeight : 1);
+      e.preventDefault();
+      if (!running) {
+        current = target = lastSet = window.scrollY;
+        lastTime = 0;
+        running = true;
+        doc.style.scrollBehavior = "auto";
+        requestAnimationFrame(loop);
+      }
+      target = clamp(target + delta, 0, doc.scrollHeight - window.innerHeight);
+    }, { passive: false });
+  }
+
+  /* Cursor «Ver» que acompaña al ratón sobre las piezas y tarjetas enlazadas */
+  function initCursor() {
+    if (reducedMotion || !media("(hover: hover) and (pointer: fine)").matches) return;
+    var SELECTOR = ".cat, .coll:not(.coll--end), .post, .pcard, .mega__feature, .feature, .mini-product, .model";
+    var cursor = document.createElement("div");
+    cursor.className = "cursor";
+    cursor.setAttribute("aria-hidden", "true");
+    cursor.innerHTML = '<span class="cursor__dot">Ver</span>';
+    document.body.appendChild(cursor);
+    doc.classList.add("has-cursor");
+
+    var x = -200, y = -200, tx = -200, ty = -200, active = null, frame = null;
+    function loop() {
+      x += (tx - x) * 0.25;
+      y += (ty - y) * 0.25;
+      cursor.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+      frame = Math.abs(tx - x) + Math.abs(ty - y) > 0.4 ? requestAnimationFrame(loop) : null;
+    }
+    function setActive(el) {
+      if (el === active) return;
+      if (active) active.removeAttribute("data-cursor-on");
+      active = el;
+      if (el) el.setAttribute("data-cursor-on", "");
+      cursor.classList.toggle("is-visible", !!el);
+    }
+    document.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse") return;
+      if (!active) { x = e.clientX; y = e.clientY; }
+      tx = e.clientX;
+      ty = e.clientY;
+      setActive(e.target.closest ? e.target.closest(SELECTOR) : null);
+      if (!frame) frame = requestAnimationFrame(loop);
+    }, { passive: true });
+    document.addEventListener("mouseout", function (e) { if (!e.relatedTarget) setActive(null); });
+    window.addEventListener("scroll", function () {
+      if (!active) return;
+      var el = document.elementFromPoint(tx, ty);
+      setActive(el && el.closest ? el.closest(SELECTOR) : null);
+    }, { passive: true });
+  }
+
+  /* El pie queda detrás del contenido en escritorio: con teclado se lleva a la vista */
+  function initFooterReveal() {
+    var footer = document.querySelector(".footer");
+    if (!footer) return;
+    footer.addEventListener("focusin", function () {
+      if (getComputedStyle(footer).position !== "sticky") return;
+      var max = doc.scrollHeight - window.innerHeight;
+      if (window.scrollY < max - 2) window.scrollTo({ top: max, behavior: "auto" });
+    });
+  }
+
+  /* Relojería: la imagen cambia al pasar por cada firma */
+  function initSwap() {
+    var frame = document.querySelector("[data-swap-media]");
+    var list = document.querySelector("[data-swap-list]");
+    if (!frame || !list) return;
+    var images = [].slice.call(frame.querySelectorAll("[data-swap]"));
+    var links = [].slice.call(list.querySelectorAll("[data-swap-to]"));
+    var caption = frame.querySelector("[data-swap-caption]");
+    var shown = -1;
+    function show(i) {
+      if (i === shown || !images[i]) return;
+      shown = i;
+      images.forEach(function (img, k) { img.classList.toggle("is-active", k === i); });
+      links.forEach(function (a, k) { a.classList.toggle("is-active", k === i); });
+      if (caption) caption.textContent = links[i].getAttribute("data-caption");
+    }
+    links.forEach(function (a) {
+      var i = +a.getAttribute("data-swap-to");
+      a.addEventListener("mouseenter", function () { show(i); });
+      a.addEventListener("focus", function () { show(i); });
+    });
+    show(0);
   }
 
   /* ------------------------------------------------------------------ */
@@ -361,11 +739,19 @@
 
   function boot() {
     safe(initHeader, "cabecera");
+    safe(initMegaMenu, "menú desplegable");
     safe(initDrawer, "menú");
+    safe(initSplit, "titulares");
     safe(initReveal, "animaciones");
     safe(initHeroSlides, "hero");
     safe(initHeroStores, "boutiques");
+    safe(initChapters, "capítulos");
+    safe(initHScroll, "colecciones");
+    safe(initSwap, "relojería");
     safe(initParallax, "parallax");
+    safe(initSmoothScroll, "desplazamiento suave");
+    safe(initCursor, "cursor");
+    safe(initFooterReveal, "pie");
     safe(initForms, "formularios");
     safe(initBlog, "blog");
     safe(initYear, "año");
